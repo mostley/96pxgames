@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*- 
 
-from lib.game import *
+from gamelib.game import *
 
 class SampleGame(Game):
 

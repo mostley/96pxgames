@@ -6,7 +6,7 @@ import pygame.font
 from pygame.color import Color
 from random import *
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'lib'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'gamelib'))
 from vector import *
 
 import pygl2d
