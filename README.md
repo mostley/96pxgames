@@ -1,18 +1,18 @@
 96pxgames
 =========
 
-== Dependencies ==
+####Dependencies
 
-  * pygame
-  * PyOpenGL
+* pygame
+* PyOpenGL
 
-== Getting Started ==
+####Getting Started
 
-execute ``python simulator/simulator.py`` to start the Simulator (windows only)
+execute ```python simulator/simulator.py``` to start the Simulator (windows only)
 
 See sample.py for an example implementation.
 
 
-== Known Bugs ==
+####Known Bugs
 
-  * Simulator window will not respond to UI events, still works though
+* Simulator window will not respond to UI events, still works though
