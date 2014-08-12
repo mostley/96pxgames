@@ -9,6 +9,7 @@
 == Getting Started ==
 
 execute ``python simulator/simulator.py`` to start the Simulator (windows only)
+
 See sample.py for an example implementation.
 
 
