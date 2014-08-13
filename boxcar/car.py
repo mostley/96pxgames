@@ -60,4 +60,4 @@ class Car(GameObject):
 
 	def collide(self, otherGameObject, direction):
 		self.movementStack = [ ]
-
+		
