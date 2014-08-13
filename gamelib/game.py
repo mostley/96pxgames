@@ -2,23 +2,25 @@
 # -*- coding: utf8 -*- 
 
 from librgb import *
-import time
-import pygame
+import time, StringIO, pygame, sys, os
 
 class Game:
-	def __init__(self, playerCount, ip="192.168.1.5"):
+	def __init__(self, ip="192.168.1.5"):
 		self.rgb = RGB(ip)
-		self.rgb.invertedX = True
+		self.rgb.invertedX = False
 		self.rgb.invertedY = True
 
-		self.framerate = 40
+		self.framerate = 20
 
 		self.previousControllerState = []
 		self.controllers = []
 
 		pygame.init()
 		pygame.joystick.init()
-		for i in range(playerCount):
+		self.playerCount = pygame.joystick.get_count()
+		print str(self.playerCount) + " Joysticks connected."
+
+		for i in range(self.playerCount):
 			joystick = pygame.joystick.Joystick(i)
 			self.controllers.append(joystick)
 			joystick.init()
@@ -33,13 +35,14 @@ class Game:
 
 	def poll(self, dt):
 		pygame.event.pump()
-
+		
 		for player in range(len(self.controllers)):
 			controller = self.controllers[player]
 			previousControllerState = self.previousControllerState[player]
 
 			xAxis = -controller.get_axis(0)
 			yAxis = -controller.get_axis(1)
+
 			previousXAxis = previousControllerState['xAxis']
 			previousYAxis = previousControllerState['yAxis']
 			xChanged = previousXAxis != xAxis
@@ -70,8 +73,6 @@ class Game:
 			dt = clock.tick(self.framerate) / 1000.0
 			#dt = time.time() - self.lastFrame
 
-			self.poll(dt)
-
 			self.update(dt)
 
 			self.draw(self.rgb)
@@ -81,7 +82,7 @@ class Game:
 			self.lastFrame = time.time()
 
 	def update(self, dt):
-		pass
+		self.poll(dt)
 
 	def draw(self, rgb):
 		rgb.clear(BLACK)

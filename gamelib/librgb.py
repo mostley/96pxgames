@@ -48,6 +48,8 @@ class RGB:
         self.device = None
 
         self.buffer = self._createGridBuffer()
+        
+        self.dirty = True
 
     # ==================================================================================================
     # ====================      Private                       ==========================================
@@ -96,6 +98,9 @@ class RGB:
             self.device = SPIDevice()
         self.device.write(bytedata)
 
+    def _colorEquals(self, c1, c2):
+        return c1[0] == c2[0] and c1[1] == c2[1] and c1[2] == c2[2]
+
     # ==================================================================================================
     # ====================      Public                         ==========================================
     # ==================================================================================================
@@ -112,14 +117,22 @@ class RGB:
             pos[1] = (PIXEL_DIM_Y - 1) - pos[1]
         if pos[0] >= 0 and pos[0] < PIXEL_DIM_X and \
            pos[1] >= 0 and pos[1] < PIXEL_DIM_Y:
+            if not self._colorEquals(self.buffer[pos[0]][pos[1]], color):
+                self.dirty = True
+
             self.buffer[pos[0]][pos[1]] = color
 
     def clear(self, color):
         for x in range(len(self.buffer)):
             for y in range(len(self.buffer[x])):
+                if self._colorEquals(self.buffer[x][y], color):
+                    self.dirty = True
+
                 self.buffer[x][y] = color
 
     def send(self):
+        if not self.dirty: return
+
         bytes = self._toByteArray()
 
         if self.remote:
