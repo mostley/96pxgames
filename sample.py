@@ -6,7 +6,7 @@ from gamelib.game import *
 class SampleGame(Game):
 
 	def __init__(self, ip):
-		Game.__init__(self, 1, ip)
+		Game.__init__(self, ip)
 
 		self.characterPositions = [
 			Vector(0,0), 
@@ -24,16 +24,14 @@ class SampleGame(Game):
 	def update(self, dt):
 		Game.update(self, dt)
 		
-		for player in range(len(self.characterPositions)):
+		for player in range(self.playerCount):
 			playerPos = self.characterPositions[player] + ( self.axisVectors[player] * dt ) * self.characterSpeed
 			self.characterPositions[player] = Vector(playerPos.x % PIXEL_DIM_X, playerPos.y % PIXEL_DIM_Y)
 
 	def draw(self, rgb):
 		Game.draw(self, rgb)
 
-		rgb.setPixel(Vector(2, 3), RED)
-
-		for i in range(4):
+		for i in range(self.playerCount):
 			rgb.setPixel(self.characterPositions[i], self.characterColors[i])
 
 	def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
