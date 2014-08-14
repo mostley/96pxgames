@@ -3,21 +3,12 @@
 
 import sys, socket, math
 from vector import *
+from color import *
 
 PIXEL_SIZE = 3
 PIXEL_DIM_X = 12
 PIXEL_DIM_Y = 8
 BUFFER_SIZE = PIXEL_DIM_X * PIXEL_DIM_Y * PIXEL_SIZE
-
-WHITE = [255,255,255]
-RED = [255,0,0]
-GREEN = [0,255,0]
-BLUE = [0,0,255]
-TURQUE = [0,255,255]
-YELLOW = [255,255,0]
-BLACK = [0,0,0]
-ORANGE = [255, 127, 0]
-PURPLE = [128, 0, 128]
 
 class SPIDevice:
     def __init__(self, device='/dev/spidev0.0'):

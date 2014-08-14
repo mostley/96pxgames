@@ -61,6 +61,7 @@ class Vector:
 	def toArr(self): return [self.x, self.y]
 	def toInt(self): return Vector(int(self.x), int(self.y))
 	def toIntArr(self): return self.toInt().toArr()
+	def clone(self): return Vector(self.x, self.y)
 
 	def getNormalized(self): 
 		if self.getLength() != 0:

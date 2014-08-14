@@ -8,7 +8,7 @@ class Sprite(GameObject):
 		GameObject.__init__(self)
 
 		self.spriteData = spriteData
-		self.isDead = False
+		self.ended = False
 		self.indexAnimation = Animation(0, len(self.spriteData), duration, loop)
 
 	def update(self, dt):
@@ -16,10 +16,9 @@ class Sprite(GameObject):
 
 		self.indexAnimation.update(dt)
 
-		self.isDead = self.indexAnimation.ended
+		self.ended = self.indexAnimation.ended
 
 	def draw(self, rgb):
-		print "draw"
 		if not self.indexAnimation.ended:
 			index = int(self.indexAnimation.getValue())
 			if index >= len(self.spriteData) or index < 0:
@@ -29,5 +28,4 @@ class Sprite(GameObject):
 			for pixel in self.spriteData[index]:
 				#TODO: wrap around
 				rgb.setPixel(self.position + pixel['position'], pixel['color'])
-		print "enddraw"
 
