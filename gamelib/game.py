@@ -3,6 +3,7 @@
 
 from librgb import *
 import time, StringIO, pygame, sys, os
+from keyboardcontroller import KeyboardController
 
 class Game:
 	def __init__(self, ip="192.168.1.5"):
@@ -17,6 +18,7 @@ class Game:
 
 		pygame.init()
 		pygame.joystick.init()
+		pygame.display.set_mode([200,100])
 		self.playerCount = pygame.joystick.get_count()
 		print str(self.playerCount) + " Joysticks connected."
 
@@ -30,14 +32,41 @@ class Game:
 				'aButton': False,
 				'bButton': False
 			})
+		
+		self.keyboardJoystick = False
+		if self.playerCount == 0:
+			self.playerCount = 2
+			self.keyboardJoystick = True
+			self.previousControllerState.append({
+				'xAxis': 0,
+				'yAxis': 0,
+				'aButton': False,
+				'bButton': False
+			})
+			self.controllers.append(KeyboardController(id=0))
+			self.previousControllerState.append({
+				'xAxis': 0,
+				'yAxis': 0,
+				'aButton': False,
+				'bButton': False
+			})
+			self.controllers.append(KeyboardController(id=1))
 
 		self.lastFrame = time.time()
 
 	def poll(self, dt):
 		pygame.event.pump()
 		
+		
+		if self.keyboardJoystick:
+			events = pygame.event.get()
+		
 		for player in range(len(self.controllers)):
 			controller = self.controllers[player]
+			
+			if self.keyboardJoystick:
+				controller.set_events(events)
+			
 			previousControllerState = self.previousControllerState[player]
 
 			xAxis = -controller.get_axis(0)
