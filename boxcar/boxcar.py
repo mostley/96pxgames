@@ -6,6 +6,7 @@ from random import shuffle
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from gamelib.game import *
+from gamelib.sound import *
 from car import *
 from map import *
 from explosion import *
@@ -17,10 +18,17 @@ class GameMode:
 	Simulate = 2
 	GameOver = 3
 
+class Sounds:
+	tock1 = 'tock1'
+	tock2 = 'tock2'
+
 class BoxCar(Game):
 
 	def __init__(self, ip):
-		Game.__init__(self, ip)
+		Game.__init__(self, ip, [
+			Sound(Sounds.tock1, 'sounds/tock1.wav'),
+			Sound(Sounds.tock2, 'sounds/tock2.wav'),
+		])
 
 		self.map = Map()
 		carColors = [ORANGE, BLUE, TURQUE, YELLOW]
@@ -39,6 +47,9 @@ class BoxCar(Game):
 
 		self.winner = None
 		self.gameOverAnimation = None
+
+		if self.playerCount == 0:
+			raise Exception("not enough players")
 
 	def simulationIsOver(self):
 		result = True
@@ -189,6 +200,9 @@ class BoxCar(Game):
 			if player == self.currentPlayer:
 				if (self.notIsZero(xAxis) and self.isZero(previousXAxis)) or \
 				   (self.notIsZero(yAxis) and self.isZero(previousYAxis)):
+
+					self.playSound(Sounds.tock1)
+
 					x = 1 if xAxis > 0.1 else 0
 					x = -1 if xAxis < -0.1 else x
 					y = 1 if yAxis > 0.1 else 0

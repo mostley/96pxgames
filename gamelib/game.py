@@ -3,9 +3,10 @@
 
 from librgb import *
 import time, StringIO, pygame, sys, os
+from sound import Sound
 
 class Game:
-	def __init__(self, ip="192.168.1.5"):
+	def __init__(self, ip="192.168.1.5", resources=[]):
 		self.rgb = RGB(ip)
 		self.rgb.invertedX = False
 		self.rgb.invertedY = True
@@ -17,6 +18,16 @@ class Game:
 
 		pygame.init()
 		pygame.joystick.init()
+		pygame.mixer.init()
+
+		self.resources = {}
+		for r in resources:
+			r.load()
+			if self.resources.has_key(r.name):
+				print "double resource key: '", r.name,"'"
+
+			self.resources[r.name] = r
+
 		self.playerCount = pygame.joystick.get_count()
 		print str(self.playerCount) + " Joysticks connected."
 
@@ -93,4 +104,24 @@ class Game:
 	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
 		pass
 
+	def playSound(self, name):
+		res = self.resources[r.name]
+		if isinstance(res, Sound):
+			self.resources[r.name].play()
+		else:
+			print "tried to play non-sound resource"
+
+	def stopSound(self, name):
+		res = self.resources[r.name]
+		if isinstance(res, Sound):
+			self.resources[r.name].stop()
+		else:
+			print "tried to stop non-sound resource"
+
+	def fadeoutSound(self, name, time):
+		res = self.resources[r.name]
+		if isinstance(res, Sound):
+			self.resources[r.name].fadeout(time)
+		else:
+			print "tried to fadeout non-sound resource"
 
