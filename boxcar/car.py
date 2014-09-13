@@ -18,12 +18,15 @@ class Car(GameObject):
 		self.isDead = False
 
 		self.movementStack = []
+		self.trail = []
 
 		self.isHightlighted = False
 		self.isActive = False
 
+		self.isInInputMode = False
+
 		self.lastSimulationFrame = time.time()
-		self.simulationInterval = 0.25
+		self.simulationInterval = 0.5
 
 		mutedColor = Color.multiply(self.color, 0.5)
 		self.colorAnimation = Animation( self.color, mutedColor, 0.25, AnimationLoopType.PingPong )
@@ -37,6 +40,8 @@ class Car(GameObject):
 			if self.isActive and self.hasMovements():
 				if (time.time() - self.lastSimulationFrame) > self.simulationInterval:
 					movement = self.movementStack.pop()
+
+					self.trail.append(self.position.clone())
 
 					self.position += movement
 					self.position = Vector(self.position.x % PIXEL_DIM_X, self.position.y % PIXEL_DIM_Y)
@@ -55,6 +60,9 @@ class Car(GameObject):
 
 	def draw(self, rgb):
 		GameObject.draw(self, rgb)
+
+		for dot in self.trail:
+			rgb.setPixel(dot, self.color)
 
 	def addMovement(self, movement):
 		self.movementStack.insert(0, movement)
@@ -76,3 +84,8 @@ class Car(GameObject):
 	def reset(self):
 		self.isDead = False
 		self.health = 100
+
+	def setInputMode(self, value):
+		self.isInInputMode = value
+		if value:
+			self.trail = []

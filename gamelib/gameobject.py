@@ -17,4 +17,4 @@ class GameObject:
 	def draw(self, rgb):
 		for x in range(self.width):
 			for y in range(self.height):
-				rgb.setPixel(self.position + Vector(x, y), self.color)
+				rgb.setPixel(self.position + Vector(x, y).toIntArr(), self.color)

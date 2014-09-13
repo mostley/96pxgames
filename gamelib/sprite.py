@@ -7,6 +7,8 @@ class Sprite(GameObject):
 	def __init__(self, spriteData, duration, loop):
 		GameObject.__init__(self)
 
+		self.duration = duration
+
 		self.spriteData = spriteData
 		self.ended = False
 		self.indexAnimation = Animation(0, len(self.spriteData), duration, loop)

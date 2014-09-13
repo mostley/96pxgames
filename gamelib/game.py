@@ -4,10 +4,11 @@
 from librgb import *
 import time, StringIO, pygame, sys, os
 from sound import Sound
+from music import MusicManager
 from keyboardcontroller import KeyboardController
 
 class Game:
-	def __init__(self, ip="192.168.1.5", resources=[]):
+	def __init__(self, ip="192.168.1.5", resources=[], songs=[]):
 		self.rgb = RGB(ip)
 		self.rgb.invertedX = False
 		self.rgb.invertedY = True
@@ -16,6 +17,8 @@ class Game:
 
 		self.previousControllerState = []
 		self.controllers = []
+
+		self.music = MusicManager(songs)
 
 		pygame.init()
 		pygame.joystick.init()
@@ -134,23 +137,23 @@ class Game:
 		pass
 
 	def playSound(self, name):
-		res = self.resources[r.name]
+		res = self.resources[name]
 		if isinstance(res, Sound):
-			self.resources[r.name].play()
+			self.resources[name].play()
 		else:
 			print "tried to play non-sound resource"
 
 	def stopSound(self, name):
-		res = self.resources[r.name]
+		res = self.resources[name]
 		if isinstance(res, Sound):
-			self.resources[r.name].stop()
+			self.resources[name].stop()
 		else:
 			print "tried to stop non-sound resource"
 
 	def fadeoutSound(self, name, time):
-		res = self.resources[r.name]
+		res = self.resources[name]
 		if isinstance(res, Sound):
-			self.resources[r.name].fadeout(time)
+			self.resources[name].fadeout(time)
 		else:
 			print "tried to fadeout non-sound resource"
 

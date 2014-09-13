@@ -21,6 +21,13 @@ class GameMode:
 class Sounds:
 	tock1 = 'tock1'
 	tock2 = 'tock2'
+	explode = 'explode'
+	fanfare = 'fanfare'
+	fanfare_lost = 'fanfare_lost'
+
+class Music:
+	music_slow = 'music_slow'
+	music_interesting = 'music_interesting'
 
 class BoxCar(Game):
 
@@ -28,7 +35,18 @@ class BoxCar(Game):
 		Game.__init__(self, ip, [
 			Sound(Sounds.tock1, 'sounds/tock1.wav'),
 			Sound(Sounds.tock2, 'sounds/tock2.wav'),
-		])
+			Sound(Sounds.explode, 'sounds/explode.wav'),
+			Sound(Sounds.fanfare, 'sounds/fanfare.ogg'),
+			Sound(Sounds.fanfare_lost, 'sounds/fanfare_lost.ogg'),
+		],[{
+			"name": Music.music_slow, 
+			"file": 'sounds/music_slow.ogg', 
+			"volume": 0.1
+		},{
+			"name": Music.music_interesting, 
+			"file": 'sounds/music_interesting.ogg',
+			"volume": 1
+		}])
 
 		self.map = Map()
 		carColors = [ORANGE, BLUE, TURQUE, YELLOW]
@@ -47,6 +65,8 @@ class BoxCar(Game):
 
 		self.winner = None
 		self.gameOverAnimation = None
+
+		self.simulationPause = 0
 
 		if self.playerCount == 0:
 			raise Exception("not enough players")
@@ -72,13 +92,28 @@ class BoxCar(Game):
 			if self.mode == GameMode.PlayerInput:
 				self.setInputOrder()
 				print "PlayerInput Mode"
+				
+				for car in self.cars:
+					car.setInputMode(True)
+				
+				self.music.play(Music.music_slow)
 			elif self.mode == GameMode.Simulate:
 				self.setInputOrder()
 				print "Simulation Mode"
+				
+				for car in self.cars:
+					car.setInputMode(False)
+
+				self.music.play(Music.music_interesting)
 			elif self.mode == GameMode.Bootstrap:
 				print "Bootstrap Mode"
 			elif self.mode == GameMode.GameOver:
 				print "GameOver Mode"
+				if self.winner != None:
+					self.playSound(Sounds.fanfare)
+				else:
+					self.playSound(Sounds.fanfare_lost)
+				self.music.pause()
 			else:
 				print "Unknown Mode"
 
@@ -106,9 +141,12 @@ class BoxCar(Game):
 
 			lastCars = [car for car in self.cars if not car.isDead]
 			if len(lastCars) <= 1:
-				self.setMode(GameMode.GameOver)
 				self.winner = None if len(lastCars) <= 0 else lastCars[0]
-				self.gameOverAnimation = WinSprite(self.winner.color)
+				winnercolor = (0,0,0)
+				if self.winner != None:
+					winnercolor =self.winner.color
+				self.gameOverAnimation = WinSprite(winnercolor)
+				self.setMode(GameMode.GameOver)
 		elif self.mode == GameMode.Bootstrap:
 			self.setMode(GameMode.PlayerInput)
 		else:
@@ -116,20 +154,23 @@ class BoxCar(Game):
 		
 		self.map.update(dt)
 
-		for player in range(len(self.cars)):
-			car = self.cars[player]
-			if car.isDead:
-				car.isActive = False
-			else:
-				car.isActive = self.mode == GameMode.Simulate
-				car.isHightlighted = self.mode == GameMode.PlayerInput and self.currentPlayer == player
+		if self.simulationPause <= 0:
+			for player in range(len(self.cars)):
+				car = self.cars[player]
+				if car.isDead:
+					car.isActive = False
+				else:
+					car.isActive = self.mode == GameMode.Simulate
+					car.isHightlighted = self.mode == GameMode.PlayerInput and self.currentPlayer == player
 
-				self.collisionHandling(car)
-				car.update(dt)
+					self.collisionHandling(car)
+					car.update(dt)
 
 		self.sprites = [sprite for sprite in self.sprites if not sprite.ended]
 		for sprite in self.sprites:
 			sprite.update(dt)
+
+		self.simulationPause -= dt
 
 	def collisionHandling(self, car):
 		if car.isActive and car.hasMovements():
@@ -152,13 +193,23 @@ class BoxCar(Game):
 					if otherCarNextPos == nextPos:
 						car.collide(otherCar, direction)
 						otherCar.collide(car, otherCarDirection)
-						# TODO: head collision vs side collision
-
+						
 						self.addExplosion(car.position)
 						break
 
+					for trailDot in otherCar.trail:
+						if trailDot == nextPos:
+							car.collide(otherCar, direction)
+							
+							self.addExplosion(car.position)
+
+
 	def addExplosion(self, position):
-		self.sprites.append(Explosion(position))
+		explosion = Explosion(position)
+		self.sprites.append(explosion)
+		self.playSound(Sounds.explode)
+
+		self.simulationPause = explosion.duration
 
 	def draw(self, rgb):
 		Game.draw(self, rgb)
@@ -201,7 +252,7 @@ class BoxCar(Game):
 				if (self.notIsZero(xAxis) and self.isZero(previousXAxis)) or \
 				   (self.notIsZero(yAxis) and self.isZero(previousYAxis)):
 
-					self.playSound(Sounds.tock1)
+					self.playSound(Sounds.tock1 if abs(xAxis) > 0.1 else Sounds.tock2)
 
 					x = 1 if xAxis > 0.1 else 0
 					x = -1 if xAxis < -0.1 else x

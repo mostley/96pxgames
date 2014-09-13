@@ -22,7 +22,7 @@ class Sound(Resource):
 		if self.sound == None:
 			raise Exception("sound is not initialized, please call load first")
 		
-		self.sound.play()
+		self.sound.stop()
 
 	def fadeout(self, time):
 		if self.sound == None:

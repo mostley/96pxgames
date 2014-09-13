@@ -3,11 +3,11 @@
 """vector.py: A simple little Vector class. Enabling basic vector math. """
 
 __author__      = "Sven Hecht"
-__license__ = "GPL"
-__version__ = "1.0.1"
-__maintainer__ = "Sven Hecht"
-__email__ = "info@shdev.de"
-__status__ = "Production"
+__license__     = "GPL"
+__version__     = "1.0.1"
+__maintainer__  = "Sven Hecht"
+__email__       = "info@shdev.de"
+__status__      = "Production"
 
 from random import *
 from math import *

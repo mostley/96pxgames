@@ -35,9 +35,9 @@ class KeyboardController:
 			if event.type == pygame.KEYDOWN :
 				if axis == 0:
 					if event.key == self.leftKey:
-						result -= 1
-					elif event.key == self.rightKey:
 						result += 1
+					elif event.key == self.rightKey:
+						result -= 1
 				if axis == 1:
 					if event.key == self.upKey:
 						result -= 1
@@ -51,7 +51,6 @@ class KeyboardController:
 		
 		for event in self.events:
 			if event.type == pygame.KEYDOWN :
-				print event.key, self.button0
 				if event.key == self.button0:
 					result = buttonIndex  == 0
 					break
