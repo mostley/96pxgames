@@ -67,7 +67,13 @@ class Vector:
 		if self.getLength() != 0:
 			return self / self.getLength()
 		else: return Vector(0,0)
-	
+	def modulo(self, other):
+		if isinstance(other, Vector):
+			return Vector(self.x % other.x, self.y % other.y)
+		elif isinstance(other, tuple) or isinstance(other, list):
+			return Vector(self.x % other[0], self.y % other[1])
+		else:
+			return Vector(self.x % other, self.y % other)
 	def dotproduct(self, other):
 		if isinstance(other, Vector):
 			return self.x * other.x + self.y * other.y
