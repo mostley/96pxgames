@@ -10,16 +10,23 @@ class AnimatedGameObject(GameObject):
 	def __init__(self, position, color1, color2, animationDuration=1, loop=AnimationLoopType.Loop, algorithm=AnimationAlgorithm.Linear):
 		GameObject.__init__(self)
 		self.position = position
-		self.color = color1
-		self.color1 = color1
+		self.color1 = self.color = color1
 		self.color2 = color2
 		self.animation = Animation(color1, color2, animationDuration, loop, algorithm)
+		self.velocity = Vector(0, 0)
+		self.speed = 20
+		self.friction = 0.7
 
 	def update(self, dt):
 		GameObject.update(self, dt)
 
 		self.animation.update(dt)
 		self.color = self.animation.getValue()
+
+		self.position += ( self.velocity * dt ) * self.speed
+		self.position = self.position.modulo(Vector(PIXEL_DIM_X, PIXEL_DIM_Y))
+
+		self.velocity *= self.friction
 
 	def draw(self, rgb):
 		GameObject.draw(self, rgb)

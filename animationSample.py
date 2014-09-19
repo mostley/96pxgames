@@ -4,29 +4,16 @@
 from gamelib.game import *
 from gamelib.animatedgameobject import *
 
-class Character(AnimatedGameObject):
-	def __init__(self, position, color1, color2, algorithm):
-		AnimatedGameObject.__init__(self, position, color1, color2, 1, AnimationLoopType.PingPong, algorithm)
-		self.velocity = Vector(0, 0)
-		self.speed = 10
-
-	def update(self, dt):
-		AnimatedGameObject.update(self, dt)
-
-		self.position += ( self.velocity * dt ) * self.speed
-		self.position = self.position.modulo(Vector(PIXEL_DIM_X, PIXEL_DIM_Y))
-
-
 class SampleGame(Game):
 
 	def __init__(self, ip):
 		Game.__init__(self, ip)
 
 		self.characters = [
-			Character(Vector(0,0), RED, BLUE, AnimationAlgorithm.Linear), 
-			Character(Vector(PIXEL_DIM_X-1, 0), BLUE, GREEN, AnimationAlgorithm.EaseInQuad), 
-			Character(Vector(PIXEL_DIM_X-1, PIXEL_DIM_Y-1), GREEN, YELLOW, AnimationAlgorithm.EaseOutQuad), 
-			Character(Vector(0, PIXEL_DIM_Y-1), YELLOW, BLUE, AnimationAlgorithm.EaseInOutQuad)
+			AnimatedGameObject(Vector(0,0), RED, BLUE, 1, AnimationAlgorithm.Linear), 
+			AnimatedGameObject(Vector(PIXEL_DIM_X-1, 0), BLUE, GREEN, 1, AnimationAlgorithm.EaseInQuad), 
+			AnimatedGameObject(Vector(PIXEL_DIM_X-1, PIXEL_DIM_Y-1), GREEN, YELLOW, 1, AnimationAlgorithm.EaseOutQuad), 
+			AnimatedGameObject(Vector(0, PIXEL_DIM_Y-1), YELLOW, BLUE, 1, AnimationAlgorithm.EaseInOutQuad)
 		]
 
 		self.blocks = [
@@ -70,7 +57,8 @@ class SampleGame(Game):
 	def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
 		Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
 
-		self.characters[player].velocity = Vector(xAxis, yAxis)
+		if xAxis != previousXAxis or yAxis != previousYAxis:
+			self.characters[player].velocity += Vector(xAxis, yAxis)
 
 	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
 		Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
