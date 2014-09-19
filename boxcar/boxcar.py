@@ -7,6 +7,8 @@ from random import shuffle
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from gamelib.game import *
 from gamelib.sound import *
+
+# boxcar files
 from car import *
 from map import *
 from explosion import *
