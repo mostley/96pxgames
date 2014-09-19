@@ -25,8 +25,8 @@ class Car(GameObject):
 
 		self.isInInputMode = False
 
-		self.lastSimulationFrame = time.time()
-		self.simulationInterval = 0.5
+		self.simulationInterval = 0.8
+		self.lastSimulationFrame = time.time() + self.simulationInterval
 
 		mutedColor = Color.multiply(self.color, 0.5)
 		self.colorAnimation = Animation( self.color, mutedColor, 0.25, AnimationLoopType.PingPong )

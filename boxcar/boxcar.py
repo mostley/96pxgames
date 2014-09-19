@@ -2,13 +2,12 @@
 # -*- coding: utf8 -*- 
 
 import sys, os
-from random import shuffle
+from random import shuffle, choice
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from gamelib.game import *
 from gamelib.sound import *
-
-# boxcar files
+from gamelib.animation import *
 from car import *
 from map import *
 from explosion import *
@@ -19,6 +18,7 @@ class GameMode:
 	PlayerInput = 1
 	Simulate = 2
 	GameOver = 3
+	LevelSelect = 4
 
 class Sounds:
 	tock1 = 'tock1'
@@ -26,6 +26,9 @@ class Sounds:
 	explode = 'explode'
 	fanfare = 'fanfare'
 	fanfare_lost = 'fanfare_lost'
+	freeze = 'freeze'
+	unfreeze = 'unfreeze'
+	fatz = 'fatz'
 
 class Music:
 	music_slow = 'music_slow'
@@ -40,6 +43,9 @@ class BoxCar(Game):
 			Sound(Sounds.explode, 'sounds/explode.wav'),
 			Sound(Sounds.fanfare, 'sounds/fanfare.ogg'),
 			Sound(Sounds.fanfare_lost, 'sounds/fanfare_lost.ogg'),
+			Sound(Sounds.freeze, 'sounds/freeze.wav'),
+			Sound(Sounds.unfreeze, 'sounds/unfreeze.wav'),
+			Sound(Sounds.fatz, 'sounds/fatz.wav'),
 		],[{
 			"name": Music.music_slow, 
 			"file": 'sounds/music_slow.ogg', 
@@ -50,10 +56,25 @@ class BoxCar(Game):
 			"volume": 1
 		}])
 
-		self.map = Map()
-		carColors = [ORANGE, BLUE, TURQUE, YELLOW]
 
-		self.cars = [Car(self.map.spawnpoints[i].clone(), carColors[i]) for i in range(self.playerCount)]
+		self.maps = [
+			Map(f) for f in [
+				'maps/default.blocks', 
+				'maps/empty.blocks', 
+				'maps/minimal.blocks', 
+				'maps/box.blocks'
+			]
+		]
+		self.mapIsSelected = False
+		self.mapSelectorPlayer = choice(range(self.playerCount))
+		self.map = self.maps[0]
+		self.currentMapIndex = 0
+		self.blinkAnimation = Animation(0, 1, 0.25, AnimationLoopType.PingPong)
+
+		self.carColors = [ORANGE, BLUE, TURQUE, YELLOW]
+
+		self.cars = []
+		self.spawnCars()
 
 		self.currentPlayer = 0
 		self.mode = GameMode.Bootstrap
@@ -72,6 +93,9 @@ class BoxCar(Game):
 
 		if self.playerCount == 0:
 			raise Exception("not enough players")
+
+	def spawnCars(self):
+		self.cars = [Car(self.map.spawnpoints[i].position.clone(), self.carColors[i]) for i in range(self.playerCount)]
 
 	def simulationIsOver(self):
 		result = True
@@ -98,6 +122,7 @@ class BoxCar(Game):
 				for car in self.cars:
 					car.setInputMode(True)
 				
+				self.playSound(Sounds.freeze)
 				self.music.play(Music.music_slow)
 			elif self.mode == GameMode.Simulate:
 				self.setInputOrder()
@@ -106,6 +131,7 @@ class BoxCar(Game):
 				for car in self.cars:
 					car.setInputMode(False)
 
+				self.playSound(Sounds.unfreeze)
 				self.music.play(Music.music_interesting)
 			elif self.mode == GameMode.Bootstrap:
 				print "Bootstrap Mode"
@@ -116,6 +142,10 @@ class BoxCar(Game):
 				else:
 					self.playSound(Sounds.fanfare_lost)
 				self.music.pause()
+			elif self.mode == GameMode.LevelSelect:
+				print "Level Selection Mode"
+
+				self.music.play(Music.music_slow)
 			else:
 				print "Unknown Mode"
 
@@ -150,10 +180,22 @@ class BoxCar(Game):
 				self.gameOverAnimation = WinSprite(winnercolor)
 				self.setMode(GameMode.GameOver)
 		elif self.mode == GameMode.Bootstrap:
-			self.setMode(GameMode.PlayerInput)
+			self.setMode(GameMode.LevelSelect)
+		elif self.mode == GameMode.LevelSelect:
+			Game.update(self, dt)
+			self.blinkAnimation.update(dt)
+
+			if self.mapIsSelected:
+				self.setMode(GameMode.PlayerInput)
 		else:
 			print "unknown Game mode"
 		
+		self.updateMap(dt)
+
+	def updateMap(self, dt):
+		if self.map == None: return
+		if not self.mapIsSelected: return
+
 		self.map.update(dt)
 
 		if self.simulationPause <= 0:
@@ -216,6 +258,14 @@ class BoxCar(Game):
 	def draw(self, rgb):
 		Game.draw(self, rgb)
 
+		self.drawMap(rgb)
+
+	def drawMap(self, rgb):
+		if self.map == None: return
+		if self.mode == GameMode.LevelSelect:
+			if self.blinkAnimation.currentValue > 0.5:
+				return
+
 		self.map.draw(rgb, self.mode == GameMode.Simulate)
 
 		for car in self.cars:
@@ -230,15 +280,35 @@ class BoxCar(Game):
 
 	def restart(self):
 		print "Restart Game"
-		for car in self.cars:
-			car.reset()
-
+		
 		self.setInputOrder()
 
-		for i in range(self.playerCount):
-			self.cars[i].position = self.map.spawnpoints[i].clone()
+		self.spawnCars()
 
-		self.setMode(GameMode.PlayerInput)
+		self.setMode(GameMode.LevelSelect)
+		self.mapIsSelected = False
+		self.mapSelectorPlayer += 1
+		if self.mapSelectorPlayer >= self.playerCount:
+			self.mapSelectorPlayer = 0
+
+	def selectCurrentMap(self):
+		self.mapIsSelected = True
+
+	def nextMap(self):
+		self.currentMapIndex += 1
+		if self.currentMapIndex >= len(self.maps):
+			self.currentMapIndex = 0
+
+		self.map = self.maps[self.currentMapIndex]
+		self.spawnCars()
+
+	def previousMap(self):
+		self.currentMapIndex -= 1
+		if self.currentMapIndex < 0:
+			self.currentMapIndex = len(self.maps) - 1
+
+		self.map = self.maps[self.currentMapIndex]
+		self.spawnCars()
 
 	def isZero(self, d):
 		return abs(d) < 0.1
@@ -262,6 +332,13 @@ class BoxCar(Game):
 					y = -1 if yAxis < -0.1 else y
 
 					self.cars[self.currentPlayer].addMovement(Vector(x, y))
+		elif self.mode == GameMode.LevelSelect:
+			if player == 0:
+				if self.notIsZero(xAxis) and self.isZero(previousXAxis):
+					if xAxis > 0.1:
+						self.nextMap()
+					elif xAxis < -0.1:
+						self.previousMap()
 
 	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
 		Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
@@ -270,6 +347,10 @@ class BoxCar(Game):
 			if player == self.currentPlayer:
 				if not aButton and previousAButton:
 					self.nextPlayer()
+		elif self.mode == GameMode.LevelSelect:
+			if player == 0:
+				if not aButton and previousAButton:
+					self.selectCurrentMap()
 
 if __name__ == "__main__":
 	print "Starting game"

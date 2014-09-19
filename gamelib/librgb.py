@@ -10,6 +10,8 @@ PIXEL_DIM_X = 12
 PIXEL_DIM_Y = 8
 BUFFER_SIZE = PIXEL_DIM_X * PIXEL_DIM_Y * PIXEL_SIZE
 
+def clampByte(i): return 0 if i < 0 else ( i if i < 256 else 255 )
+
 class SPIDevice:
     def __init__(self, device='/dev/spidev0.0'):
         #import RPi.GPIO as GPIO
@@ -55,19 +57,19 @@ class RGB:
             x = int(math.floor(i/3 / PIXEL_DIM_Y))
             if x % 2 == 0:
                 c = self.buffer[x][y]
-                result[i] = int(c[0])
+                result[i] = clampByte(int(c[0]))
                 i = i + 1
-                result[i] = int(c[1])
+                result[i] = clampByte(int(c[1]))
                 i = i + 1
-                result[i] = int(c[2])
+                result[i] = clampByte(int(c[2]))
                 i = i + 1
             else:
                 c = self.buffer[x][(PIXEL_DIM_Y-1)-y]
-                result[i] = int(c[0])
+                result[i] = clampByte(int(c[0]))
                 i = i + 1
-                result[i] = int(c[1])
+                result[i] = clampByte(int(c[1]))
                 i = i + 1
-                result[i] = int(c[2])
+                result[i] = clampByte(int(c[2]))
                 i = i + 1
 
         return result

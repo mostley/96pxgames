@@ -4,63 +4,65 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from gamelib.vector import *
 from gamelib.librgb import *
+from block import *
 
 class Map:
-	def __init__(self):
-		self.spawnpoints = [
-			Vector(1,1), 
-			Vector(PIXEL_DIM_X-2, 1),
-			Vector(PIXEL_DIM_X-2, PIXEL_DIM_Y-2),
-			Vector(1, PIXEL_DIM_Y-2)
-		]
+    def __init__(self, blockfile):
+        self.spawnpoints = []
 
-		self.blocks = [
-			Vector( 5, 2),
-			Vector( 6, 2),
-			Vector( 5, 3),
-			Vector( 6, 3),
-			Vector( 5, 4),
-			Vector( 6, 4),
-			Vector( 5, 3),
-			Vector( 6, 3),
-			Vector( 4, 3),
-			Vector( 7, 3),
-			Vector( 4, 4),
-			Vector( 7, 4),
-			Vector( 5, 5),
-			Vector( 6, 5),
+        self.blocks = []
+        self.loadFile(blockfile)
 
-			Vector(10, 3),
-			Vector(10, 4),
+    def loadFile(self, blockfile):
+        lines = []
+        try:
+            with open(blockfile) as f:
+                lines = f.readlines()
+        except Exception as e:
+            print "loading block file: ",e
 
-			Vector( 1, 3),
-			Vector( 1, 4),
-			
-			Vector( 5, 0),
-			Vector( 6, 0),
-			Vector( 5, 7),
-			Vector( 6, 7),
-		]
+        print "loading map '", blockfile, "'"
+        for line in lines:
+            try:
+                line = line.strip()
+                if len(line) <= 0: continue
+                if line[0] == "#": continue
 
-	def update(self, dt):
-		pass
+                lineParts = line.split('|')
+                if len(lineParts) < 3: continue
 
-	def draw(self, rgb, isActive):
-		if not isActive:
-			rgb.clear((50, 50, 50))
-		else:
-			rgb.clear(BLACK)
+                x = int(lineParts[0].strip())
+                y = int(lineParts[1].strip())
+                blocktype = int(lineParts[2].strip())
 
-		for i in range(len(self.blocks)):
-			block = self.blocks[i]
+                if x < 0: x = PIXEL_DIM_X + x
+                if y < 0: y = PIXEL_DIM_Y + y
 
-			rgb.setPixel(block, GREEN)
+                block = Block(Vector(x, y), blocktype)
+                if blocktype == BlockType.SpawnPoint:
+                    self.spawnpoints.append(block)
+                else:
+                    self.blocks.append(block)
+            except Exception as e:
+                print "loading block file lines: ",e
 
-	def getBlockAt(self, position):
-		result = None
+    def update(self, dt):
+        pass
 
-		for block in self.blocks:
-			if block == position:
-				result = block
+    def draw(self, rgb, isActive):
+        if not isActive:
+            rgb.clear((50, 50, 50))
+        else:
+            rgb.clear(BLACK)
 
-		return result
+        for block in self.blocks:
+            block.draw(rgb)
+
+    def getBlockAt(self, position):
+        result = None
+
+        for block in self.blocks:
+            if block.position == position: # todo proper intersection
+                result = block
+
+        return result
