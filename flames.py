@@ -68,7 +68,8 @@ def main():
     randomflamebase(flame)    
 
     print "Connecting to display ..."
-    rgb = librgb.RGB("127.0.0.1")
+    #rgb = librgb.RGB("127.0.0.1")
+    rgb = librgb.RGB("192.168.0.17")
     rgb.invertedX = False
     rgb.invertedY = True
     rgb.clear((0,0,0))

@@ -62,7 +62,8 @@ class BoxCar(Game):
 				'maps/default.blocks', 
 				'maps/empty.blocks', 
 				'maps/minimal.blocks', 
-				'maps/box.blocks'
+				'maps/box.blocks', 
+				'maps/smallbox.blocks'
 			]
 		]
 		self.mapIsSelected = False
@@ -311,10 +312,10 @@ class BoxCar(Game):
 		self.spawnCars()
 
 	def isZero(self, d):
-		return abs(d) < 0.1
+		return abs(d) < 0.8
 
 	def notIsZero(self, d):
-		return abs(d) > 0.1
+		return abs(d) > 0.8
 
 	def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
 		Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
@@ -324,14 +325,17 @@ class BoxCar(Game):
 				if (self.notIsZero(xAxis) and self.isZero(previousXAxis)) or \
 				   (self.notIsZero(yAxis) and self.isZero(previousYAxis)):
 
-					self.playSound(Sounds.tock1 if abs(xAxis) > 0.1 else Sounds.tock2)
 
-					x = 1 if xAxis > 0.1 else 0
-					x = -1 if xAxis < -0.1 else x
-					y = 1 if yAxis > 0.1 else 0
-					y = -1 if yAxis < -0.1 else y
+					x =  1 if xAxis >  0.8 else 0
+					x = -1 if xAxis < -0.8 else x
+					y =  1 if yAxis >  0.8 else 0
+					y = -1 if yAxis < -0.8 else y
 
-					self.cars[self.currentPlayer].addMovement(Vector(-x, y))
+					if x != 0: y = 0
+
+					self.playSound(Sounds.tock1 if abs(x) > 0 else Sounds.tock2)
+
+					self.cars[self.currentPlayer].addMovement(Vector(x, y))
 		elif self.mode == GameMode.LevelSelect:
 			if player == 0:
 				if self.notIsZero(xAxis) and self.isZero(previousXAxis):

@@ -30,8 +30,8 @@ class TowerDefense(Game):
 
 if __name__ == "__main__":
 	print "Starting game"
-	game = TowerDefense("127.0.0.1")
-	#game = TowerDefense("192.168.1.22")
+	#game = TowerDefense("127.0.0.1")
+	game = TowerDefense("192.168.0.17")
 	game.run()
 	print "Stopping game"
 
