@@ -331,7 +331,7 @@ class BoxCar(Game):
 					y = 1 if yAxis > 0.1 else 0
 					y = -1 if yAxis < -0.1 else y
 
-					self.cars[self.currentPlayer].addMovement(Vector(x, y))
+					self.cars[self.currentPlayer].addMovement(Vector(-x, y))
 		elif self.mode == GameMode.LevelSelect:
 			if player == 0:
 				if self.notIsZero(xAxis) and self.isZero(previousXAxis):
@@ -354,8 +354,8 @@ class BoxCar(Game):
 
 if __name__ == "__main__":
 	print "Starting game"
-	sample = BoxCar("127.0.0.1")
-	#sample = BoxCar("192.168.1.22")
+	#sample = BoxCar("127.0.0.1")
+	sample = BoxCar("192.168.0.17")
 	sample.run()
 	print "Stopping game"
 
