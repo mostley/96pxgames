@@ -6,9 +6,10 @@ import time, StringIO, pygame, sys, os
 from sound import Sound
 from music import MusicManager
 from keyboardcontroller import KeyboardController
+from statemachine import StateMachine
 
 class Game:
-	def __init__(self, ip="192.168.1.5", resources=[], songs=[]):
+	def __init__(self, ip="192.168.1.5", resources=None, songs=None, states=None):
 		self.rgb = RGB(ip)
 		self.rgb.invertedX = False
 		self.rgb.invertedY = True
@@ -17,6 +18,15 @@ class Game:
 
 		self.previousControllerState = []
 		self.controllers = []
+
+		if not resources:
+			resources = []
+		if not songs:
+			songs = []
+		if not states:
+			states = []
+
+		self.stateMachine = StateMachine(states)
 
 		self.music = MusicManager(songs)
 
@@ -127,14 +137,34 @@ class Game:
 	def update(self, dt):
 		self.poll(dt)
 
+		self.stateMachine.update(dt)
+
 	def draw(self, rgb):
 		rgb.clear(BLACK)
 
+		self.stateMachine.draw(rgb)
+
 	def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
-		pass
+		#todo rotation
+
+		if (self._notIsZero(xAxis) and self._isZero(previousXAxis)) or \
+		   (self._notIsZero(yAxis) and self._isZero(previousYAxis)):
+
+			x = 1 if xAxis > 0.1 else 0
+			x = -1 if xAxis < -0.1 else x
+			y = 1 if yAxis > 0.1 else 0
+			y = -1 if yAxis < -0.1 else y
+
+			if x != 0 and y != 0:
+				self.onClampedAxisChanged(player, x, y)
+
+		self.stateMachine.onAxisChanged(player, xAxis, yAxis, previousXAxis, previousYAxis)
 
 	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-		pass
+		self.stateMachine.onAxisChanged(player, aButton, bButton, previousAButton, previousBButton)
+
+	def onClampedAxisChanged(self, player, x, y):
+		self.stateMachine.onClampedAxisChanged(player, player, x, y)
 
 	def playSound(self, name):
 		res = self.resources[name]
@@ -156,4 +186,10 @@ class Game:
 			self.resources[name].fadeout(time)
 		else:
 			print "tried to fadeout non-sound resource"
+
+	def _isZero(self, d):
+		return abs(d) < 0.1
+
+	def _notIsZero(self, d):
+		return abs(d) > 0.1
 
