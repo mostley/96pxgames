@@ -16,6 +16,7 @@ class Sprite(GameObject):
 	def update(self, dt):
 		GameObject.update(self, dt)
 
+		self.indexAnimation.duration = self.duration
 		self.indexAnimation.update(dt)
 
 		self.ended = self.indexAnimation.ended
