@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*- 
 
-import pygame, os, sys, time, math, socket
+import pygame, os, sys, time, math, socket, select
 import pygame.font
 from pygame.color import Color
 from random import *

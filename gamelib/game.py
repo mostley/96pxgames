@@ -155,16 +155,16 @@ class Game:
 			y = 1 if yAxis > 0.1 else 0
 			y = -1 if yAxis < -0.1 else y
 
-			if x != 0 and y != 0:
+			if x != 0 or y != 0:
 				self.onClampedAxisChanged(player, x, y)
 
 		self.stateMachine.onAxisChanged(player, xAxis, yAxis, previousXAxis, previousYAxis)
 
 	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-		self.stateMachine.onAxisChanged(player, aButton, bButton, previousAButton, previousBButton)
+		self.stateMachine.onButtonChanged(player, aButton, bButton, previousAButton, previousBButton)
 
 	def onClampedAxisChanged(self, player, x, y):
-		self.stateMachine.onClampedAxisChanged(player, player, x, y)
+		self.stateMachine.onClampedAxisChanged(player, x, y)
 
 	def playSound(self, name):
 		res = self.resources[name]
@@ -186,6 +186,9 @@ class Game:
 			self.resources[name].fadeout(time)
 		else:
 			print "tried to fadeout non-sound resource"
+
+	def setState(self, name):
+		self.stateMachine.setState(name)
 
 	def _isZero(self, d):
 		return abs(d) < 0.1
