@@ -3,7 +3,6 @@
 import math
 from gamelib.state import *
 from gamelib.animatedgameobject import *
-from menuitem import *
 
 class MenuItem(AnimatedGameObject):
 	def __init__(self, index, name, position, size):
