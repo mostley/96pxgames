@@ -857,7 +857,10 @@ class FramesGame(Game):
 
 if __name__ == "__main__":
     print "Starting game"
-    game = FramesGame("127.0.0.1")
+    ip = "127.0.0.1"
+    if len(sys.argv) > 1:
+        ip = sys.argv[1]
+    game = FramesGame(ip)
     game.run()
     print "Stopping game"
 

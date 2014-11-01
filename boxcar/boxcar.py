@@ -354,8 +354,10 @@ class BoxCar(Game):
 
 if __name__ == "__main__":
 	print "Starting game"
-	sample = BoxCar("127.0.0.1")
-	#sample = BoxCar("192.168.1.22")
+	ip = "127.0.0.1"
+	if len(sys.argv) > 1:
+		ip = sys.argv[1]
+	sample = BoxCar(ip)
 	sample.run()
 	print "Stopping game"
 
