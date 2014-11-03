@@ -99,6 +99,10 @@ class Animation:
 		self.direction = AnimationDirection.Forward
 
 	def update(self, dt):
+		if self.duration <= 0:
+			self.currentValue = 0
+			return
+
 		if self.direction == AnimationDirection.Forward:
 			self.time += dt
 		else:

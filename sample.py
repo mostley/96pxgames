@@ -19,7 +19,7 @@ class SampleGame(Game):
 
 		self.axisVectors = [Vector(0,0),Vector(0,0),Vector(0,0),Vector(0,0)]
 
-		self.characterSpeed = 10
+		self.characterSpeed = 18
 
 	def update(self, dt):
 		Game.update(self, dt)
