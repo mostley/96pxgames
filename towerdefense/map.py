@@ -1,10 +1,11 @@
 # -*- coding: utf8 -*- 
 
-import sys, os, random
+import os
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from gamelib.vector import *
 from gamelib.librgb import *
 from region import *
+
 
 class Map:
     def __init__(self):
@@ -13,9 +14,9 @@ class Map:
         self.width = 100
         self.height = 100
 
-        self.generateHeightMap()
+        self.generate_height_map()
 
-    def generateHeightMap(self):
+    def generate_height_map(self):
         for x in range(self.width):
             row = []
             for x in range(self.height):

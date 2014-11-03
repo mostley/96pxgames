@@ -10,6 +10,6 @@ ORANGE = [255, 127, 0]
 PURPLE = [128, 0, 128]
 
 class Color:
-	@staticmethod
-	def multiply(color, factor):
-		return [ color[0] * factor, color[1] * factor, color[2] * factor ]
+    @staticmethod
+    def multiply(color, factor):
+        return [ color[0] * factor, color[1] * factor, color[2] * factor ]

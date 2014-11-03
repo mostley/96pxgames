@@ -31,6 +31,7 @@ class SPIDevice:
 class RGB:
 
     def __init__(self, ip=None, port=6803, verbose=False):
+        print "Connecting to ", ip, ":", port
         self.UDP_IP = ip
         self.UDP_PORT = port
         self.verbose = verbose
