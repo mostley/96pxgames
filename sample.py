@@ -5,48 +5,48 @@ from gamelib.game import *
 
 class SampleGame(Game):
 
-	def __init__(self, ip):
-		Game.__init__(self, ip)
+    def __init__(self, ip):
+        Game.__init__(self, ip)
 
-		self.characterPositions = [
-			Vector(0,0), 
-			Vector(PIXEL_DIM_X-1, 0),
-			Vector(PIXEL_DIM_X-1, PIXEL_DIM_Y-1),
-			Vector(0, PIXEL_DIM_Y-1)
-		]
+        self.characterPositions = [
+            Vector(0,0),
+            Vector(PIXEL_DIM_X-1, 0),
+            Vector(PIXEL_DIM_X-1, PIXEL_DIM_Y-1),
+            Vector(0, PIXEL_DIM_Y-1)
+        ]
 
-		self.characterColors = [RED, BLUE, GREEN, YELLOW]
+        self.characterColors = [RED, BLUE, GREEN, YELLOW]
 
-		self.axisVectors = [Vector(0,0),Vector(0,0),Vector(0,0),Vector(0,0)]
+        self.axisVectors = [Vector(0,0),Vector(0,0),Vector(0,0),Vector(0,0)]
 
-		self.characterSpeed = 18
+        self.characterSpeed = 18
 
-	def update(self, dt):
-		Game.update(self, dt)
-		
-		for player in range(self.playerCount):
-			playerPos = self.characterPositions[player] + ( self.axisVectors[player] * dt ) * self.characterSpeed
-			self.characterPositions[player] = Vector(playerPos.x % PIXEL_DIM_X, playerPos.y % PIXEL_DIM_Y)
+    def update(self, dt):
+        Game.update(self, dt)
 
-	def draw(self, rgb):
-		Game.draw(self, rgb)
+        for player in range(self.playerCount):
+            playerPos = self.characterPositions[player] + ( self.axisVectors[player] * dt ) * self.characterSpeed
+            self.characterPositions[player] = Vector(playerPos.x % PIXEL_DIM_X, playerPos.y % PIXEL_DIM_Y)
 
-		for i in range(self.playerCount):
-			rgb.setPixel(self.characterPositions[i], self.characterColors[i])
+    def draw(self, rgb):
+        Game.draw(self, rgb)
 
-	def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
-		Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
+        for i in range(self.playerCount):
+            rgb.setPixel(self.characterPositions[i], self.characterColors[i])
 
-		self.axisVectors[player] = Vector(xAxis, yAxis)
+    def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
+        Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
 
-	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-		Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
+        self.axisVectors[player] = Vector(xAxis, yAxis)
 
-		print "onButtonChanged"
+    def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
+        Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
+
+        print "onButtonChanged"
 
 if __name__ == "__main__":
-	print "Starting game"
-	sample = SampleGame("127.0.0.1")
-	sample.run()
-	print "Stopping game"
+    print "Starting game"
+    sample = SampleGame("127.0.0.1")
+    sample.run()
+    print "Stopping game"
 

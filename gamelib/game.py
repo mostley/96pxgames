@@ -8,6 +8,7 @@ from music import MusicManager
 from keyboardcontroller import KeyboardController
 from statemachine import StateMachine
 
+
 class Orientation:
     South = 0
     West = 1
@@ -15,6 +16,7 @@ class Orientation:
     East = 3
 
     Count = 4
+
 
 class Game:
     def __init__(self, ip="127.0.0.1", resources=None, songs=None, states=None):
@@ -81,7 +83,7 @@ class Game:
                 'cButton': False,
                 'dButton': False
             })
-            self.controllers.append(KeyboardController(id=0))
+            self.controllers.append(KeyboardController(controller_id=0))
             self.controllerOrientations.append(Orientation.South)
 
             self.previousControllerState.append({
@@ -92,7 +94,7 @@ class Game:
                 'cButton': False,
                 'dButton': False
             })
-            self.controllers.append(KeyboardController(id=1))
+            self.controllers.append(KeyboardController(controller_id=1))
             self.controllerOrientations.append(Orientation.South)
 
         self.lastFrame = time.time()
@@ -183,9 +185,11 @@ class Game:
         self.stateMachine.draw(rgb)
 
     def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
-        #todo rotation
+        if (self._isZero(xAxis) and self._notIsZero(previousXAxis)) or \
+           (self._isZero(yAxis) and self._notIsZero(previousYAxis)):
+            self.onClampedAxisChanged(player, 0, 0)
 
-        if (self._notIsZero(xAxis) and self._isZero(previousXAxis)) or \
+        elif (self._notIsZero(xAxis) and self._isZero(previousXAxis)) or \
            (self._notIsZero(yAxis) and self._isZero(previousYAxis)):
 
             x = 1 if xAxis > 0.1 else 0

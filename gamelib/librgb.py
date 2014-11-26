@@ -23,7 +23,7 @@ class SPIDevice:
 
     def tick(self):
         pass
-    
+
     def write(self, buffer):
         self.spidev.write(buffer)
         self.spidev.flush()
@@ -42,7 +42,7 @@ class RGB:
         self.device = None
 
         self.buffer = self._createGridBuffer()
-        
+
         self.dirty = True
 
     # ==================================================================================================
@@ -95,22 +95,37 @@ class RGB:
     def _colorEquals(self, c1, c2):
         return c1[0] == c2[0] and c1[1] == c2[1] and c1[2] == c2[2]
 
-    # ==================================================================================================
-    # ====================      Public                         ==========================================
-    # ==================================================================================================
-    
-    def setPixel(self, v, color):
-        #print v,color
-        if color == None or len(color) < 3:
-            raise Exception("wrong color format " + str(color))
+    def _get_coord(self, v):
+        result = None
 
         pos = v.toIntArr()
         if self.invertedX:
             pos[0] = (PIXEL_DIM_X - 1) - pos[0]
         if self.invertedY:
             pos[1] = (PIXEL_DIM_Y - 1) - pos[1]
-        if pos[0] >= 0 and pos[0] < PIXEL_DIM_X and \
-           pos[1] >= 0 and pos[1] < PIXEL_DIM_Y:
+        if 0 <= pos[0] < PIXEL_DIM_X and \
+           0 <= pos[1] < PIXEL_DIM_Y:
+            result = pos
+
+        return result
+
+    # ==================================================================================================
+    # ====================      Public                         ==========================================
+    # ==================================================================================================
+
+    def add_color(self, v, color):
+        pos = self._get_coord(v)
+        if not pos is None:
+            new_color = Color.add(color, self.buffer[pos[0]][pos[1]])
+            self.setPixel(v, new_color)
+
+    def setPixel(self, v, color):
+        #print v,color
+        if color is None or len(color) < 3:
+            raise Exception("wrong color format " + str(color))
+
+        pos = self._get_coord(v)
+        if not pos is None:
             if not self._colorEquals(self.buffer[pos[0]][pos[1]], color):
                 self.dirty = True
 
@@ -133,7 +148,7 @@ class RGB:
             if self.verbose:
                 print "sending to ",self.UDP_IP,":",self.UDP_PORT
                 print "sending ",self.buffer
-            
+
             self._sendBytes(bytes)
         else:
             if self.verbose:
