@@ -82,6 +82,8 @@ class Racer(Game):
             while self.offset >= 1.0:
                 self.offset -= 1.0
 
+            self.check_collision()
+
             del self.map[0]
             self.map.append(self.generate_map_slice())
 
@@ -122,6 +124,15 @@ class Racer(Game):
 
     def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
         Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
+
+    def check_collision(self):
+        relevant_slice = self.map[1]
+
+        if relevant_slice[0] > self.ship.position.x or \
+           PIXEL_DIM_X - 1 - relevant_slice[1] <= self.ship.position.x:
+            print "collide!", time.time()
+            #todo explode, sound, score, next player
+
 
 if __name__ == "__main__":
     print "Starting game"

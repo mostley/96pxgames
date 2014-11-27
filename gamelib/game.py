@@ -21,7 +21,7 @@ class Orientation:
 class Game:
     def __init__(self, ip="127.0.0.1", resources=None, songs=None, states=None):
         self.rgb = RGB(ip)
-        self.rgb.invertedX = False
+        self.rgb.invertedX = True
         self.rgb.invertedY = True
 
         self.framerate = 20
