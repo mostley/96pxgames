@@ -119,6 +119,12 @@ class RGB:
             new_color = Color.add(color, self.buffer[pos[0]][pos[1]])
             self.setPixel(v, new_color)
 
+    def mix_color(self, v, color, alpha):
+        pos = self._get_coord(v)
+        if not pos is None:
+            new_color = Color.add(Color.multiply(color, alpha), self.buffer[pos[0]][pos[1]])
+            self.setPixel(v, new_color)
+
     def setPixel(self, v, color):
         #print v,color
         if color is None or len(color) < 3:

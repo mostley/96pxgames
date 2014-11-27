@@ -10,7 +10,7 @@ class Ship(AnimatedGameObject):
     def __init__(self, position, color1, color2):
         AnimatedGameObject.__init__(self, position, color1, color2)
 
-        self.outer_color_fraction = 0.5
+        self.outer_color_fraction = 0.2
         self.speed = 5
         self.friction = 1.0
 
@@ -19,24 +19,12 @@ class Ship(AnimatedGameObject):
 
     def draw(self, rgb):
 
-        outer_color = Color.multiply(self.color, self.outer_color_fraction)
+        outer_color = Color.multiply(YELLOW, self.outer_color_fraction)
 
-        self.draw_pixel_at(rgb, self.position, self.color)
-        self.draw_pixel_at(rgb, self.position + Vector(0, -1).toIntArr(), outer_color)
-        self.draw_pixel_at(rgb, self.position + Vector(-1, -1).toIntArr(), outer_color)
-        self.draw_pixel_at(rgb, self.position + Vector(1, -1).toIntArr(), outer_color)
-
-    @staticmethod
-    def draw_pixel_at(rgb, position, color):
-        x_rest = position.x % 1
-        y_rest = position.y % 1
-
-        rest = math.sqrt(x_rest*x_rest + y_rest*y_rest)
-
-        rgb.add_color(position + Vector(1, 0), Color.multiply(color, x_rest))
-        rgb.add_color(position + Vector(0, 1), Color.multiply(color, y_rest))
-
-        rgb.add_color(position, Color.multiply(color, 1 - rest))
+        rgb.setPixel(self.position, self.color)
+        rgb.mix_color(self.position + Vector(0, -1).toIntArr(), YELLOW, 1)
+        rgb.mix_color(self.position + Vector(-1, -1).toIntArr(), YELLOW, 0.1)
+        rgb.mix_color(self.position + Vector(1, -1).toIntArr(), YELLOW, 0.1)
 
 
 class Racer(Game):
@@ -46,9 +34,9 @@ class Racer(Game):
 
         self.characterPosition = Vector(5, 7)
 
-        self.character_colors = [RED, BLUE, GREEN, YELLOW, ORANGE, PURPLE]
+        self.character_colors = [RED, BLUE, WHITE, ORANGE, PURPLE]
         self.background_color = BLACK
-        self.wall_color = WHITE
+        self.wall_color = Color.multiply(GREEN, 0.5)
 
         self.map = []
         self.offset = 0.0
@@ -106,43 +94,39 @@ class Racer(Game):
             left, right = self.map[y][0], self.map[y][1]
             next_left, next_right = self.map[y+1]
 
-            for x in range(PIXEL_DIM_X):
-                pixel = Vector(x, y)
-                distance = 0.0
 
-                for lx in range(left):
-                    d = Vector.distance(Vector(lx, y - self.offset), pixel)
-                    if d < self.sharpness:
-                        distance += self.sharpness - d
-                for rx in range(right):
-                    d = Vector.distance(Vector(PIXEL_DIM_X - 1 - rx, y - self.offset), pixel)
-                    if d < self.sharpness:
-                        distance += self.sharpness - d
-
-                for lx in range(next_left):
-                    d = Vector.distance(Vector(lx, y + 1 - self.offset), pixel)
-                    if d < self.sharpness:
-                        distance += self.sharpness - d
-                for rx in range(next_right):
-                    d = Vector.distance(Vector(PIXEL_DIM_X - 1 - rx, y + 1 - self.offset), pixel)
-                    if d < self.sharpness:
-                        distance += self.sharpness - d
-
-                color = Color.multiply(self.wall_color, distance)
-                rgb.setPixel(pixel, color)
+            for lx in range(left):
+                pixel = Vector(lx, y)
+                rgb.setPixel(pixel, self.wall_color)
+            for rx in range(right):
+                pixel = Vector(PIXEL_DIM_X - 1 - rx, y)
+                rgb.setPixel(pixel, self.wall_color)
 
         self.ship.draw(rgb)
 
+    @staticmethod
+    def draw_pixel_at(rgb, position, color):
+        x_rest = position.x % 1
+        y_rest = position.y % 1
+
+        rest = math.sqrt(x_rest*x_rest + y_rest*y_rest)
+
+        rgb.add_color(position + Vector(1, 0), Color.multiply(color, x_rest))
+        rgb.add_color(position + Vector(0, 1), Color.multiply(color, y_rest))
+
+        rgb.add_color(position, Color.multiply(color, 1 - rest))
+
     def onClampedAxisChanged(self, player, x, y):
         Game.onClampedAxisChanged(self, player, x, y)
-        self.ship.velocity.x = x
+        self.ship.position.x += x
 
     def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
         Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
 
 if __name__ == "__main__":
     print "Starting game"
-    ip = "127.0.0.1"
+    #ip = "127.0.0.1"
+    ip = "192.168.0.19"
     if len(sys.argv) > 1:
         ip = sys.argv[1]
     game = Racer(ip)
