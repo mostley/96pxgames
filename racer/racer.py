@@ -3,6 +3,7 @@
 
 from gamelib.game import *
 from gamelib.sprites.explosion import *
+from gamelib.statemachine import StateChange
 
 from gamestate import GameState
 from gameoverstate import GameOverState
@@ -29,6 +30,15 @@ class Racer(Game):
 
     def onButtonChanged(self, player, a_button, b_button, previous_a_button, previous_b_button):
         Game.onButtonChanged(self, player, a_button, b_button, previous_a_button, previous_b_button)
+
+    def on_state_changed(self, state, change_type):
+        Game.on_state_changed(self, state, change_type)
+
+        if change_type == StateChange.Leave:
+            if state.name == "Game":
+                self.setState("GameOver")
+            else:
+                self.setState("Game")
 
 
 if __name__ == "__main__":

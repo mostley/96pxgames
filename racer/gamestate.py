@@ -23,7 +23,7 @@ class GameState(State):
 
         self.map = []
         self.offset = 0.0
-        self.scroll_speed = 0.5
+        self.initial_scroll_speed = self.scroll_speed = 0.5
         self.scroll_speed_increment = 0.1
         self.sharpness = 1.1
 
@@ -37,6 +37,11 @@ class GameState(State):
 
         for y in range(PIXEL_DIM_Y*2 + 1):
             self.map.append(self.generate_map_slice())
+
+    def reset(self):
+        self.sprites = []
+        self.offset = 0.0
+        self.scroll_speed = self.initial_scroll_speed
 
     def generate_map_slice(self):
         if len(self.map) == 0:
@@ -126,7 +131,7 @@ class GameState(State):
             print "collide!", time.time()
             self.add_explosion(self.ship.position)
             #todo explode, sound, score, next player
-            
+            # todo wait for explosion to finish before over
             self.game_over()
 
     def add_explosion(self, position):
@@ -137,7 +142,12 @@ class GameState(State):
         self.simulationPause = explosion.duration
 
     def game_over(self):
-        pass
+        self.ended = True
+
+    def onEnter(self, old_state):
+        State.onEnter(self, old_state)
+        print old_state
+        self.reset()
 
     @staticmethod
     def draw_pixel_at(rgb, position, color):

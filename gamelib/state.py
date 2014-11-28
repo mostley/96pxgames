@@ -1,26 +1,27 @@
 # -*- coding: utf8 -*- 
 
 class State:
-	def __init__(self, name):
-		self.name = name
+    def __init__(self, name):
+        self.name = name
+        self.ended = False
 
-	def update(self, dt):
-		pass
+    def update(self, dt):
+        pass
 
-	def draw(self, rgb):
-		pass
+    def draw(self, rgb):
+        pass
 
-	def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
-		pass
+    def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
+        pass
 
-	def onClampedAxisChanged(self, player, x, y):
-		pass
+    def onClampedAxisChanged(self, player, x, y):
+        pass
 
-	def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-		pass
+    def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
+        pass
 
-	def onEnter(self, oldState):
-		pass
+    def onEnter(self, oldState):
+        pass
 
-	def onLeave(self, newState):
-		pass
+    def onLeave(self, newState):
+        pass

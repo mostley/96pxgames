@@ -37,7 +37,7 @@ class Game:
         if not states:
             states = []
 
-        self.stateMachine = StateMachine(states)
+        self.stateMachine = StateMachine(states, self.on_state_changed)
 
         self.music = MusicManager(songs)
 
@@ -207,6 +207,9 @@ class Game:
 
     def onClampedAxisChanged(self, player, x, y):
         self.stateMachine.onClampedAxisChanged(player, x, y)
+
+    def on_state_changed(self, state, change_type):
+        pass
 
     def playSound(self, name):
         res = self.resources[name]
