@@ -1,16 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*- 
 
-import sys, os
-from random import shuffle, choice
-
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from gamelib.game import *
 from gamelib.sound import *
-from gamelib.animation import *
 from car import *
 from map import *
-from explosion import *
+from gamelib.sprites.explosion import *
 from winsprite import *
 
 class GameMode:

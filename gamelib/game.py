@@ -202,8 +202,8 @@ class Game:
 
         self.stateMachine.onAxisChanged(player, xAxis, yAxis, previousXAxis, previousYAxis)
 
-    def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-        self.stateMachine.onButtonChanged(player, aButton, bButton, previousAButton, previousBButton)
+    def onButtonChanged(self, player, a_button, b_button, previous_a_button, previous_b_button):
+        self.stateMachine.onButtonChanged(player, a_button, b_button, previous_a_button, previous_b_button)
 
     def onClampedAxisChanged(self, player, x, y):
         self.stateMachine.onClampedAxisChanged(player, x, y)
