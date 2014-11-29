@@ -38,13 +38,14 @@ class Racer(Game):
             if state.name == "Game":
                 self.setState("GameOver")
             else:
+                print "go to game"
                 self.setState("Game")
 
 
 if __name__ == "__main__":
     print "Starting game"
-    ip = "127.0.0.1"
-    #ip = "192.168.0.19"
+    #ip = "127.0.0.1"
+    ip = "192.168.0.19"
     if len(sys.argv) > 1:
         ip = sys.argv[1]
     game = Racer(ip)

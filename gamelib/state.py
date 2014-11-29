@@ -21,7 +21,7 @@ class State:
         pass
 
     def onEnter(self, oldState):
-        pass
+        self.ended = False
 
     def onLeave(self, newState):
-        pass
+        self.ended = True

@@ -35,8 +35,9 @@ class StateMachine:
             self.currentState.update(dt)
 
             if self.currentState.ended and not self.state_change_callback is None:
-                self.state_change_callback(self.currentState, StateChange.Leave)
+                state = self.currentState
                 self.currentState = None
+                self.state_change_callback(state, StateChange.Leave)
 
     def draw(self, rgb):
         if self.currentState:

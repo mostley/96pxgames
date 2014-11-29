@@ -128,7 +128,6 @@ class GameState(State):
 
         if relevant_slice[0] > self.ship.position.x or \
            PIXEL_DIM_X - 1 - relevant_slice[1] < self.ship.position.x:
-            print "collide!", time.time()
             self.add_explosion(self.ship.position)
             #todo explode, sound, score, next player
             # todo wait for explosion to finish before over
