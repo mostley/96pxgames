@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mostley/96pxgames.svg)](https://travis-ci.org/mostley/96pxgames)
+
 96pxgames
 =========
 
