@@ -1,2 +1,5 @@
-__all__ = ['game', 'vector', 'librgb']
-from game import *
+"""The 96 Pixel Games SDK
+
+.. moduleauthor:: Sven Hecht <sven.hecht@gmail.com>
+
+"""

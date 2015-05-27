@@ -7,6 +7,7 @@ from animation import *
 
 
 class AnimatedGameObject(GameObject):
+    """ The AnimatedGameObject is able to let a pixel animate between two colors. """
 
     def __init__(self, position, color1, color2, animationDuration=1, loop=AnimationLoopType.Loop, algorithm=AnimationAlgorithm.Linear):
         GameObject.__init__(self)
