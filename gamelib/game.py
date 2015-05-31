@@ -1,5 +1,6 @@
-#!/usr/bin/python
 # -*- coding: utf8 -*- 
+
+"""game.py: The implementation of the main elements representing a game. """
 
 from librgb import *
 import time, StringIO, pygame, sys, os
@@ -10,6 +11,8 @@ from statemachine import StateMachine
 
 
 class Orientation:
+    """ Direction Enumeration """
+
     South = 0
     West = 1
     North = 2
@@ -19,6 +22,48 @@ class Orientation:
 
 
 class Game:
+    """ The Game is the main entry point for the game. You'll want to inherit from this to create a game.
+
+    Example usage:
+
+    class MyGame(Game):
+        def __init__(self, ip):
+            Game.__init__(self, ip, [
+                Sound('tock1', 'sounds/tock1.wav')
+            ],[{
+                "name": 'main_music',
+                "file": 'sounds/music_slow.ogg',
+                "volume": 0.1
+            }])
+
+        def update(self, dt):
+            Game.update(self, dt)
+
+        def draw(self, rgb):
+            Game.draw(self, rgb)
+
+        def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
+            Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
+
+        def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
+            Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
+            
+        def onClampedAxisChanged(self, player, x, y):
+            Game.onClampedAxisChanged(self, player, x, y)
+
+        def on_state_changed(self, state, change_type):
+            Game.on_state_changed(self, state, change_type)
+
+    Args:
+        ip (string, Optional): the ip of the rgb display to target. Defaults to "127.0.0.1"
+        resources (string, Optional): a list of resources to preload (e.g. Sound). 
+            This enables the use of playSound, stopSound and fadeoutSound.
+            Defaults to None
+        songs (string, Optional): a list of music to load into the MusicManager. Can be accessed with "self.music". Defaults to None
+        states (string, Optional): a list of states to be used with the integrated StateMachine. Defaults to None
+
+    """
+
     def __init__(self, ip="127.0.0.1", resources=None, songs=None, states=None):
         self.rgb = RGB(ip)
         self.rgb.invertedX = True
