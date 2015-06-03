@@ -61,58 +61,57 @@ To run the simulator simply execute</p>
 
 <p>A simplistic example for a game written with this library would be:</p>
 
-<pre><code>#!/usr/bin/python
-# -*- coding: utf8 -*- 
+<div class="highlight highlight-python"><pre><span class="pl-c">#!/usr/bin/python</span>
+<span class="pl-c"># -*- coding: utf8 -*- </span>
 
-from gamelib.game import *
+<span class="pl-k">from</span> gamelib.game <span class="pl-k">import</span> <span class="pl-k">*</span>
 
-class SampleGame(Game):
+<span class="pl-k">class</span> <span class="pl-en">SampleGame</span>(<span class="pl-e">Game</span>):
 
-    def __init__(self, ip):
-        Game.__init__(self, ip)
+    <span class="pl-k">def</span> <span class="pl-en"><span class="pl-c1">__init__</span></span>(<span class="pl-smi">self</span>, <span class="pl-smi">ip</span>):
+        Game.<span class="pl-c1">__init__</span>(<span class="pl-v">self</span>, ip)
 
-        self.characterPositions = [
-            Vector(0,0),
-            Vector(PIXEL_DIM_X-1, 0),
-            Vector(PIXEL_DIM_X-1, PIXEL_DIM_Y-1),
-            Vector(0, PIXEL_DIM_Y-1)
+        <span class="pl-v">self</span>.characterPositions <span class="pl-k">=</span> [
+            Vector(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>),
+            Vector(PIXEL_DIM_X<span class="pl-k">-</span><span class="pl-c1">1</span>, <span class="pl-c1">0</span>),
+            Vector(PIXEL_DIM_X<span class="pl-k">-</span><span class="pl-c1">1</span>, PIXEL_DIM_Y<span class="pl-k">-</span><span class="pl-c1">1</span>),
+            Vector(<span class="pl-c1">0</span>, PIXEL_DIM_Y<span class="pl-k">-</span><span class="pl-c1">1</span>)
         ]
 
-        self.characterColors = [RED, BLUE, GREEN, YELLOW]
+        <span class="pl-v">self</span>.characterColors <span class="pl-k">=</span> [RED, BLUE, GREEN, YELLOW]
 
-        self.axisVectors = [Vector(0,0),Vector(0,0),Vector(0,0),Vector(0,0)]
+        <span class="pl-v">self</span>.axisVectors <span class="pl-k">=</span> [Vector(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>),Vector(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>),Vector(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>),Vector(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>)]
 
-        self.characterSpeed = 18
+        <span class="pl-v">self</span>.characterSpeed <span class="pl-k">=</span> <span class="pl-c1">18</span>
 
-    def update(self, dt):
-        Game.update(self, dt)
+    <span class="pl-k">def</span> <span class="pl-en">update</span>(<span class="pl-smi">self</span>, <span class="pl-smi">dt</span>):
+        Game.update(<span class="pl-v">self</span>, dt)
 
-        for player in range(self.playerCount):
-            playerPos = self.characterPositions[player] + ( self.axisVectors[player] * dt ) * self.characterSpeed
-            self.characterPositions[player] = Vector(playerPos.x % PIXEL_DIM_X, playerPos.y % PIXEL_DIM_Y)
+        <span class="pl-k">for</span> player <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-v">self</span>.playerCount):
+            playerPos <span class="pl-k">=</span> <span class="pl-v">self</span>.characterPositions[player] <span class="pl-k">+</span> ( <span class="pl-v">self</span>.axisVectors[player] <span class="pl-k">*</span> dt ) <span class="pl-k">*</span> <span class="pl-v">self</span>.characterSpeed
+            <span class="pl-v">self</span>.characterPositions[player] <span class="pl-k">=</span> Vector(playerPos.x <span class="pl-k">%</span> PIXEL_DIM_X, playerPos.y <span class="pl-k">%</span> PIXEL_DIM_Y)
 
-    def draw(self, rgb):
-        Game.draw(self, rgb)
+    <span class="pl-k">def</span> <span class="pl-en">draw</span>(<span class="pl-smi">self</span>, <span class="pl-smi">rgb</span>):
+        Game.draw(<span class="pl-v">self</span>, rgb)
 
-        for i in range(self.playerCount):
-            rgb.setPixel(self.characterPositions[i], self.characterColors[i])
+        <span class="pl-k">for</span> i <span class="pl-k">in</span> <span class="pl-c1">range</span>(<span class="pl-v">self</span>.playerCount):
+            rgb.setPixel(<span class="pl-v">self</span>.characterPositions[i], <span class="pl-v">self</span>.characterColors[i])
 
-    def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
-        Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
+    <span class="pl-k">def</span> <span class="pl-en">onAxisChanged</span>(<span class="pl-smi">self</span>, <span class="pl-smi">player</span>, <span class="pl-smi">xAxis</span>, <span class="pl-smi">yAxis</span>, <span class="pl-smi">previousXAxis</span>, <span class="pl-smi">previousYAxis</span>):
+        Game.onAxisChanged(<span class="pl-v">self</span>, player, xAxis, yAxis, previousXAxis, previousYAxis)
 
-        self.axisVectors[player] = Vector(xAxis, yAxis)
+        <span class="pl-v">self</span>.axisVectors[player] <span class="pl-k">=</span> Vector(xAxis, yAxis)
 
-    def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-        Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
+    <span class="pl-k">def</span> <span class="pl-en">onButtonChanged</span>(<span class="pl-smi">self</span>, <span class="pl-smi">player</span>, <span class="pl-smi">aButton</span>, <span class="pl-smi">bButton</span>, <span class="pl-smi">previousAButton</span>, <span class="pl-smi">previousBButton</span>):
+        Game.onButtonChanged(<span class="pl-v">self</span>, player, aButton, bButton, previousAButton, previousBButton)
 
-        print "onButtonChanged"
+        <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>onButtonChanged<span class="pl-pds">"</span></span>
 
-if __name__ == "__main__":
-    print "Starting game"
-    sample = SampleGame("127.0.0.1")
+<span class="pl-k">if</span> <span class="pl-c1">__name__</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>__main__<span class="pl-pds">"</span></span>:
+    <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>Starting game<span class="pl-pds">"</span></span>
+    sample <span class="pl-k">=</span> SampleGame(<span class="pl-s"><span class="pl-pds">"</span>127.0.0.1<span class="pl-pds">"</span></span>)
     sample.run()
-    print "Stopping game"
-</code></pre>
+    <span class="pl-k">print</span> <span class="pl-s"><span class="pl-pds">"</span>Stopping game<span class="pl-pds">"</span></span></pre></div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/mostley">mostley</a></p>
