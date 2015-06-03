@@ -1,4 +1,4 @@
-|docs|
+[![Documentation Status](https://readthedocs.org/projects/96pxgames/badge/?version=latest)](https://readthedocs.org/projects/96pxgames/?badge=latest)
 
 96pxgames
 =========
