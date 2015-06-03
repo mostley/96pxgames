@@ -6,7 +6,7 @@ from vector import *
 from librgb import *
 
 
-class GameObject:
+class GameObject(object):
     """ The GameObject class represents an object in a game. 
     It is mostly used as a base class for other elements that enrich it's capabilities.
 

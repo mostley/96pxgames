@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   gamelib.rst
+   source/gamelib.rst
 
 
 Indices and tables

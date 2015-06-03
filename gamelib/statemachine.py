@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*- 
 
 
-class StateChange:
+class StateChange(object):
     Unknown = 0
     Enter = 1
     Leave = 2
 
 
-class StateMachine:
+class StateMachine(object):
     def __init__(self, states, state_change_callback=None):
         self.states = {}
         for state in states:

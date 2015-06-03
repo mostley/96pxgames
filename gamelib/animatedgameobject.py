@@ -20,17 +20,21 @@ class AnimatedGameObject(GameObject):
         self.friction = 0.7
 
     def update(self, dt):
+        """ The update method should be called regularily. 
+            It calculates the next animation step """
         GameObject.update(self, dt)
 
         self.animation.update(dt)
         self.color = self.animation.getValue()
 
-        self.position += ( self.velocity * dt ) * self.speed
+        self.position += (self.velocity * dt) * self.speed
         self.position = self.position.modulo(Vector(PIXEL_DIM_X, PIXEL_DIM_Y))
 
         self.velocity *= self.friction
 
     def draw(self, rgb):
+        """ The draw method should be called regularily.
+            It draws the next frame """
         for x in range(self.width):
             for y in range(self.height):
                 rgb.setPixel(self.position + Vector(x, y).toIntArr(), self.color)

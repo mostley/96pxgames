@@ -1,149 +1,134 @@
 96 Pixel Games SDK
 ===============
 
-Packages
+.. automodule:: gamelib
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Sub Packages
 -----------
 
 .. toctree::
 
     sprites
 
-Classes
-----------
-
-animatedgameobject class
+animatedgameobject
 ---------------------------------
 
-.. autoclass:: animatedgameobject
+.. automodule:: gamelib.animatedgameobject
     :members:
     :undoc-members:
     :show-inheritance:
 
-animation class
+animation
 ------------------------
 
-.. autoclass:: animation
+.. automodule:: gamelib.animation
     :members:
     :undoc-members:
     :show-inheritance:
 
-color class
+color
 --------------------
 
-.. autoclass:: color
+.. automodule:: gamelib.color
     :members:
     :undoc-members:
     :show-inheritance:
 
-evdev class
---------------------
-
-.. autoclass:: evdev
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-game class
+game
 -------------------
 
-.. autoclass:: game
+.. automodule:: gamelib.game
     :members:
     :undoc-members:
     :show-inheritance:
 
-gameobject class
+gameobject
 -------------------------
 
-.. autoclass:: gameobject
+.. automodule:: gamelib.gameobject
     :members:
     :undoc-members:
     :show-inheritance:
 
-keyboardcontroller class
+keyboardcontroller
 ---------------------------------
 
-.. autoclass:: keyboardcontroller
+.. automodule:: gamelib.keyboardcontroller
     :members:
     :undoc-members:
     :show-inheritance:
 
-librgb class
+librgb
 ---------------------
 
-.. autoclass:: librgb
+.. automodule:: gamelib.librgb
     :members:
     :undoc-members:
     :show-inheritance:
 
-menu class
+menu
 -------------------
 
-.. autoclass:: menu
+.. automodule:: gamelib.menu
     :members:
     :undoc-members:
     :show-inheritance:
 
-music class
+music
 --------------------
 
-.. autoclass:: music
+.. automodule:: gamelib.music
     :members:
     :undoc-members:
     :show-inheritance:
 
-resource class
+resource
 -----------------------
 
-.. autoclass:: resource
+.. automodule:: gamelib.resource
     :members:
     :undoc-members:
     :show-inheritance:
 
-sound class
+sound
 --------------------
 
-.. autoclass:: sound
+.. automodule:: gamelib.sound
     :members:
     :undoc-members:
     :show-inheritance:
 
-sprite class
+sprite
 ---------------------
 
-.. autoclass:: sprite
+.. automodule:: gamelib.sprite
     :members:
     :undoc-members:
     :show-inheritance:
 
-state class
+state
 --------------------
 
-.. autoclass:: state
+.. automodule:: gamelib.state
     :members:
     :undoc-members:
     :show-inheritance:
 
-statemachine class
+statemachine
 ---------------------------
 
-.. autoclass:: statemachine
+.. automodule:: gamelib.statemachine
     :members:
     :undoc-members:
     :show-inheritance:
 
-vector class
+vector
 ---------------------
 
-.. autoclass:: vector
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-class contents
----------------
-
-.. autoclass:: gamelib
+.. automodule:: gamelib.vector
     :members:
     :undoc-members:
     :show-inheritance:

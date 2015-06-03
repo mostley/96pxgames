@@ -3,7 +3,7 @@
 import pygame
 
 
-class KeyboardController:
+class KeyboardController(object):
     def __init__(self, controller_id):
         if controller_id == 0:
             self.leftKey = pygame.K_LEFT

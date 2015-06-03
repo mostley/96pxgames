@@ -12,7 +12,7 @@ BUFFER_SIZE = PIXEL_DIM_X * PIXEL_DIM_Y * PIXEL_SIZE
 
 def clampByte(i): return 0 if i < 0 else ( i if i < 256 else 255 )
 
-class SPIDevice:
+class SPIDevice(object):
     def __init__(self, device='/dev/spidev0.0'):
         #import RPi.GPIO as GPIO
         self.spidev = file(device, "wb")
@@ -28,7 +28,7 @@ class SPIDevice:
         self.spidev.write(buffer)
         self.spidev.flush()
 
-class RGB:
+class RGB(object):
 
     def __init__(self, ip=None, port=6803, verbose=False):
         print "Connecting to ", ip, ":", port
