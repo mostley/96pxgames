@@ -143,7 +143,7 @@ if __name__ == '__main__':
     port = 6803
     if "--port" in sys.argv:
         sys.argv.remove("--port")
-        port = sys.argv[1]
+        port = int(sys.argv[1])
 
     main = SimulatorMain(ip, port)
     print "starting..."
