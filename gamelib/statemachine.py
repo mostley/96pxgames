@@ -8,10 +8,11 @@ class StateChange(object):
 
 
 class StateMachine(object):
-    def __init__(self, states, state_change_callback=None):
+    def __init__(self, game, states, state_change_callback=None):
         self.states = {}
         for state in states:
             self.states[state.name] = state
+            state.set_game(game)
 
         self.currentState = None
         self.state_change_callback = state_change_callback

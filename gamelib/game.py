@@ -53,7 +53,7 @@ class Game(object):
         if not states:
             states = []
 
-        self.stateMachine = StateMachine(states, self.on_state_changed)
+        self.stateMachine = StateMachine(self, states, self.on_state_changed)
 
         self.music = MusicManager(songs)
 

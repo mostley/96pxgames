@@ -27,8 +27,7 @@ class Sprite(GameObject):
             if index >= len(self.spriteData) or index < 0:
                 print "[ERROR] index out of bounds (index: ",index,", len(spriteData):",len(self.spriteData),")"
                 return
-            
+
             for pixel in self.spriteData[index]:
                 #TODO: wrap around
                 rgb.setPixel(self.position + pixel['position'], pixel['color'])
-

@@ -4,6 +4,10 @@ class State(object):
     def __init__(self, name):
         self.name = name
         self.ended = False
+        self.game = None
+
+    def set_game(self, game):
+        self.game = game
 
     def update(self, dt):
         pass

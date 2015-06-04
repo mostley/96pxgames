@@ -7,27 +7,11 @@ from librgb import *
 
 
 class GameObject(object):
-    """ The GameObject class represents an object in a game. 
-    It is mostly used as a base class for other elements that enrich it's capabilities.
+    """ The GameObject class represents an object in a game.
+    It is mostly used as a base class for
+    other elements that enrich it's capabilities.
 
     If used should be updated and drawn.
-
-    Example usage:
-    - hold a list of objects in your game class
-    - in the update function call the gameobjects update function for each element
-    - in the draw function call the gameobjects draw function for each element
-
-    class MyGame(Game):
-        [...]
-
-        def update(self, dt):
-            for element in self.elements:
-                element.update(dt)
-
-        def draw(self, rgb):
-            for element in self.elements:
-                element.draw(rgb)
-        
     """
 
     def __init__(self):

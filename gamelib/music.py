@@ -16,7 +16,8 @@ class MusicManager(object):
             if self.loadedSong != None:
                 self.songs[self.loadedSong]["position"] = pygame.mixer.music.get_pos()
             pygame.mixer.music.load(self.songs[name]["file"])
-            pygame.mixer.music.set_volume(self.songs[name]["volume"])
+            if self.songs[name].has_key('volume'):
+                pygame.mixer.music.set_volume(self.songs[name]["volume"])
             self.loadedSong = name
 
         pygame.mixer.music.play(-1, self.songs[name]["position"]/1000)

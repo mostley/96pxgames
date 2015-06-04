@@ -9,12 +9,17 @@ from animation import *
 class AnimatedGameObject(GameObject):
     """ The AnimatedGameObject is able to let a pixel animate between two colors. """
 
-    def __init__(self, position, color1, color2, animationDuration=1, loop=AnimationLoopType.Loop, algorithm=AnimationAlgorithm.Linear):
+    def __init__(self, position, color1, color2=None, animationDuration=1, loop=AnimationLoopType.Loop, algorithm=AnimationAlgorithm.Linear):
         GameObject.__init__(self)
         self.position = position
+
         self.color1 = self.color = color1
-        self.color2 = color2
-        self.animation = Animation(color1, color2, animationDuration, loop, algorithm)
+        if color2 is None:
+            self.color2 = self.color1
+        else:
+            self.color2 = color2
+
+        self.animation = Animation(self.color1, self.color2, animationDuration, loop, algorithm)
         self.velocity = Vector(0, 0)
         self.speed = 20
         self.friction = 0.7

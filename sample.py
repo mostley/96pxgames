@@ -1,52 +1,63 @@
 #!/usr/bin/python
-# -*- coding: utf8 -*- 
+# -*- coding: utf8 -*-
 
 from gamelib.game import *
+from gamelib.animatedgameobject import AnimatedGameObject
+from gamelib.state import State
+
 
 class SampleGame(Game):
 
     def __init__(self, ip):
-        Game.__init__(self, ip)
+        Game.__init__(self, ip, [
+            Sound('tock', 'boxcar/sounds/tock1.wav')
+        ], [{
+            "name": 'main',
+            "file": 'boxcar/sounds/music_interesting.ogg'
+        }], [
+            MainState()
+        ])
 
-        self.characterPositions = [
-            Vector(0,0),
-            Vector(PIXEL_DIM_X-1, 0),
-            Vector(PIXEL_DIM_X-1, PIXEL_DIM_Y-1),
-            Vector(0, PIXEL_DIM_Y-1)
+        self.setState("Main")
+        self.music.play('main')
+
+
+class MainState(State):
+
+    def __init__(self):
+        State.__init__(self, "Main")
+
+        w = PIXEL_DIM_X - 1
+        h = PIXEL_DIM_Y - 1
+
+        self.characters = [
+            AnimatedGameObject(Vector(0, 0), RED),
+            AnimatedGameObject(Vector(w, 0), BLUE),
+            AnimatedGameObject(Vector(0, h), GREEN),
+            AnimatedGameObject(Vector(w, h), YELLOW)
         ]
 
-        self.characterColors = [RED, BLUE, GREEN, YELLOW]
-
-        self.axisVectors = [Vector(0,0),Vector(0,0),Vector(0,0),Vector(0,0)]
-
-        self.characterSpeed = 18
-
     def update(self, dt):
-        Game.update(self, dt)
+        State.update(self, dt)
 
-        for player in range(self.playerCount):
-            playerPos = self.characterPositions[player] + ( self.axisVectors[player] * dt ) * self.characterSpeed
-            self.characterPositions[player] = Vector(playerPos.x % PIXEL_DIM_X, playerPos.y % PIXEL_DIM_Y)
+        for character in self.characters:
+            character.update(dt)
 
     def draw(self, rgb):
-        Game.draw(self, rgb)
+        State.draw(self, rgb)
 
-        for i in range(self.playerCount):
-            rgb.setPixel(self.characterPositions[i], self.characterColors[i])
+        for character in self.characters:
+            character.draw(rgb)
 
-    def onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis):
-        Game.onAxisChanged(self, player, xAxis, yAxis, previousXAxis, previousYAxis)
+    def onAxisChanged(self, player, x, y, px, py):
+        State.onAxisChanged(self, player, x, y, px, py)
 
-        self.axisVectors[player] = Vector(xAxis, yAxis)
+        self.characters[player].velocity = Vector(x, y)
 
-    def onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton):
-        Game.onButtonChanged(self, player, aButton, bButton, previousAButton, previousBButton)
-
-        print "onButtonChanged"
+        self.game.playSound('tock')
 
 if __name__ == "__main__":
     print "Starting game"
     sample = SampleGame("127.0.0.1")
     sample.run()
     print "Stopping game"
-
