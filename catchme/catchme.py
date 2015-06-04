@@ -44,8 +44,15 @@ class MainState(State):
         for character in self.characters:
             character.score = 0
 
+        self.lastJump = 0
+
     def update(self, dt):
         State.update(self, dt)
+
+        self.lastJump += dt
+        if self.lastJump > 2:
+            self.point = Vector.random([PIXEL_DIM_X-1, PIXEL_DIM_Y-1])
+            self.lastJump = 0
 
         if self.explosion:
             self.explosion.update(dt)
