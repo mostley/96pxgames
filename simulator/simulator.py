@@ -116,6 +116,8 @@ class SimulatorMain:
             data = None
             try:
                 data, addr = sock.recvfrom( UDP_BUFFER_SIZE ) # blocking call
+            except KeyboardInterrupt:
+                break
             except:
                 pass
 
