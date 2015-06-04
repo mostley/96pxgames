@@ -27,9 +27,9 @@ PIXEL_DIM_X = 12
 
 class SimulatorMain:
 
-    def __init__(self, ip):
+    def __init__(self, ip, port=6803):
         self.UDP_IP = ip
-        self.UDP_PORT = 6803
+        self.UDP_PORT = port
 
         self.screen = None
         self.screenDim = Vector(800,576)
@@ -135,7 +135,17 @@ if __name__ == '__main__':
         FULLSCREEN = True
         sys.argv.remove("--fullscreen")
 
-    main = SimulatorMain("127.0.0.1")
+    ip = "127.0.0.1"
+    if "--ip" in sys.argv:
+        sys.argv.remove("--ip")
+        ip = sys.argv[1]
+
+    port = 6803
+    if "--port" in sys.argv:
+        sys.argv.remove("--port")
+        port = sys.argv[1]
+
+    main = SimulatorMain(ip, port)
     print "starting..."
     main.run()
     print "shuting down..."

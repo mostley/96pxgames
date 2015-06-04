@@ -97,6 +97,9 @@ class MainState(State):
 
 if __name__ == "__main__":
     print "Starting game"
-    sample = CatchMe("127.0.0.1")
+    ip = "127.0.0.1"
+    if len(sys.argv) > 1:
+        ip = sys.argv[1]
+    sample = CatchMe(ip)
     sample.run()
     print "Stopping game"
