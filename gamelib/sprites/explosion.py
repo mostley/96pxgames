@@ -1,10 +1,10 @@
 # -*- coding: utf8 -*- 
 
 import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from sprite import *
-from vector import *
-from animation import *
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+from gamelib.sprite import *
+from gamelib.vector import *
+from gamelib.animation import *
 
 
 class Explosion(Sprite):

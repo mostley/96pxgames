@@ -244,6 +244,9 @@ class Vector(object):
         else:
             return NotImplemented
 
+    def __radd__(self, other):
+        return self.__add__(other) 
+
     def __sub__(self, other):
         """ Calculates the difference between this vector and the given value.
 
