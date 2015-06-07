@@ -11,12 +11,12 @@ from gamelib.sprites.explosion import Explosion
 
 class CatchMe(Game):
 
-    def __init__(self, ip):
+    def __init__(self, ip, port):
         Game.__init__(self, ip, [
             Sound('tock', 'sounds/tock.wav')
         ], [], [
             MainState()
-        ])
+        ], port)
 
         self.setState("Main")
 
@@ -100,6 +100,9 @@ if __name__ == "__main__":
     ip = "127.0.0.1"
     if len(sys.argv) > 1:
         ip = sys.argv[1]
-    sample = CatchMe(ip)
+    port = 6803
+    if len(sys.argv) > 2:
+        port = int(sys.argv[2])
+    sample = CatchMe(ip, port)
     sample.run()
     print "Stopping game"

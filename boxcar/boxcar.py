@@ -33,7 +33,7 @@ class Music:
 
 class BoxCar(Game):
 
-    def __init__(self, ip):
+    def __init__(self, ip, port):
         Game.__init__(self, ip, [
             Sound(Sounds.tock1, 'sounds/tock1.wav'),
             Sound(Sounds.tock2, 'sounds/tock2.wav'),
@@ -51,7 +51,7 @@ class BoxCar(Game):
             "name": Music.music_interesting,
             "file": 'sounds/music_interesting.ogg',
             "volume": 1
-        }])
+        }], [], port)
 
 
         self.maps = [
@@ -354,7 +354,10 @@ if __name__ == "__main__":
     ip = "127.0.0.1"
     if len(sys.argv) > 1:
         ip = sys.argv[1]
-    game = BoxCar(ip)
+    port = 6803
+    if len(sys.argv) > 2:
+        port = int(sys.argv[2])
+    game = BoxCar(ip, port)
     game.run()
     print "Stopping game"
 

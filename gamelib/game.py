@@ -35,8 +35,8 @@ class Game(object):
         states (string, Optional): a list of states to be used with the integrated StateMachine. Defaults to None
     """
 
-    def __init__(self, ip="127.0.0.1", resources=None, songs=None, states=None):
-        self.rgb = RGB(ip)
+    def __init__(self, ip="127.0.0.1", resources=None, songs=None, states=None, port=6803):
+        self.rgb = RGB(ip, port)
         self.rgb.invertedX = True
         self.rgb.invertedY = True
 
