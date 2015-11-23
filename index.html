@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -40,6 +40,27 @@ It uses a simple UDP Protocol to transmit the data to the display but also conta
 <p>The documentation of the Library can be found here: <a href="http://96pxgames.readthedocs.org/en/latest/">Documentation</a></p>
 
 <h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<ul>
+<li>Server/Client Architecture</li>
+<li>Multi Gamepad support</li>
+<li>User orientation based inputs</li>
+<li>basic color math</li>
+<li>Simulator for implementing without hardware</li>
+<li>Sprites</li>
+<li>Sprite Animations</li>
+<li>Color Animations</li>
+</ul>
+
+<h3>
+<a id="usual-setup" class="anchor" href="#usual-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usual Setup</h3>
+
+<p><strong>Server</strong> running the game (or games via selector)</p>
+
+<p><strong>client</strong> running the udp server and is connected with hardware</p>
+
+<h3>
 <a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h3>
 
 <ul>
@@ -60,7 +81,7 @@ It uses a simple UDP Protocol to transmit the data to the display but also conta
 
 <p>A simplistic example for a game written with this library would be:</p>
 
-<div class="highlight highlight-python"><pre><span class="pl-c">#!/usr/bin/python</span>
+<div class="highlight highlight-source-python"><pre><span class="pl-c">#!/usr/bin/python</span>
 <span class="pl-c"># -*- coding: utf8 -*- </span>
 
 <span class="pl-k">from</span> gamelib.game <span class="pl-k">import</span> <span class="pl-k">*</span>
