@@ -351,10 +351,10 @@ class BoxCar(Game):
 
 if __name__ == "__main__":
     print "Starting game"
-    ip = "127.0.0.1"
+    ip = "ft.noise"
     if len(sys.argv) > 1:
         ip = sys.argv[1]
-    port = 6803
+    port = 1337
     if len(sys.argv) > 2:
         port = int(sys.argv[2])
     game = BoxCar(ip, port)
