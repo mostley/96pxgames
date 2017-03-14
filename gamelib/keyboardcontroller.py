@@ -47,14 +47,14 @@ class KeyboardController(object):
 
         if axis == 0:
             if self.events[self.leftKey]:
-                result += 1
-            if self.events[self.rightKey]:
                 result -= 1
+            if self.events[self.rightKey]:
+                result += 1
         if axis == 1:
             if self.events[self.upKey]:
-                result -= 1
-            if self.events[self.downKey]:
                 result += 1
+            if self.events[self.downKey]:
+                result -= 1
 
         return result
 

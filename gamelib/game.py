@@ -87,10 +87,12 @@ class Game(object):
             })
             self.controllerOrientations.append(Orientation.South)
 
-        self.keyboardJoystick = False
-        if self.playerCount == 0:
-            self.playerCount = 2
-            self.keyboardJoystick = True
+        self.hasKeyboardJoystick = False
+        if self.playerCount <= 1:
+            self.hasKeyboardJoystick = True
+
+            self.playerCount = self.playerCount + 2
+            
             self.previousControllerState.append({
                 'xAxis': 0,
                 'yAxis': 0,
@@ -119,13 +121,13 @@ class Game(object):
         pygame.event.pump()
 
 
-        if self.keyboardJoystick:
+        if self.hasKeyboardJoystick:
             events = pygame.event.get()
 
         for player in range(len(self.controllers)):
             controller = self.controllers[player]
 
-            if self.keyboardJoystick:
+            if isinstance(controller, KeyboardController):
                 controller.set_events(events)
 
             previousControllerState = self.previousControllerState[player]
