@@ -3,18 +3,20 @@
 96pxgames
 =========
 
-####Dependencies
+Game engine for 12x8 pixel LED matrix displays.
+
+#### Dependencies
 
 * pygame
 * PyOpenGL
 
-####Getting Started
+#### Getting Started
 
 execute ```python simulator/simulator.py``` to start the Simulator (windows only)
 
 See sample.py for an example implementation.
 
 
-####Known Bugs
+#### Known Bugs
 
 * Simulator window will not respond to UI events, still works though
